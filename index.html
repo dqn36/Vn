@@ -9,8 +9,8 @@
     <style>
         * { border-radius: 0 !important; }
         body { 
-            background: #0a1628; 
-            color: #e2e8f0; 
+            background: #000000; 
+            color: #ffffff; 
             font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
             padding: 0;
             margin: 0;
@@ -26,21 +26,21 @@
             margin: 16px;
         }
         .login-card { 
-            background: #111d2e; 
-            border: 1px solid #1a2a3a;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+            background: #0d0d0d; 
+            border: 1px solid #1a1a1a;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.8);
             padding: 28px 24px;
         }
         .login-title {
             font-size: 24px;
             font-weight: 700;
-            color: #7ae0ff;
+            color: #4a9eff;
             margin-bottom: 6px;
             text-align: center;
         }
         .login-subtitle {
             font-size: 14px;
-            color: #8899aa;
+            color: #888888;
             text-align: center;
             margin-bottom: 24px;
         }
@@ -50,25 +50,25 @@
         .form-group label {
             font-size: 13px;
             font-weight: 600;
-            color: #b0c4de;
+            color: #cccccc;
             margin-bottom: 4px;
             display: block;
         }
         .form-group input, .form-group textarea {
             width: 100%;
             padding: 10px 14px;
-            border: 1.5px solid #1a2a3a;
+            border: 1.5px solid #1a1a1a;
             border-radius: 8px !important;
             font-size: 14px;
-            background: #0a1628;
+            background: #0d0d0d;
             transition: .2s;
-            color: #e2e8f0;
+            color: #ffffff;
         }
         .form-group input:focus, .form-group textarea:focus {
-            border-color: #2563eb;
+            border-color: #4a9eff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
-            background: #0f1d33;
+            box-shadow: 0 0 0 3px rgba(74,158,255,0.2);
+            background: #1a1a1a;
         }
         .form-group textarea {
             resize: vertical;
@@ -82,22 +82,22 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
-            background: #0a1628;
-            border: 1px solid #1a2a3a;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
         }
         .form-check-input:checked {
-            background-color: #2563eb;
-            border-color: #2563eb;
+            background-color: #4a9eff;
+            border-color: #4a9eff;
         }
         .form-check-label {
             font-size: 14px;
-            color: #b0c4de;
+            color: #cccccc;
             cursor: pointer;
         }
         .btn-login, .btn-register {
             width: 100%;
             padding: 12px;
-            background: #2563eb;
+            background: #4a9eff;
             color: #fff;
             border: none;
             border-radius: 8px !important;
@@ -108,7 +108,7 @@
             margin-top: 8px;
         }
         .btn-login:hover, .btn-register:hover {
-            background: #1d4ed8;
+            background: #3a7fd4;
             transform: scale(1.01);
         }
         .btn-login:active, .btn-register:active {
@@ -116,11 +116,11 @@
         }
         .divider {
             border: none;
-            border-top: 1.5px solid #1a2a3a;
+            border-top: 1.5px solid #1a1a1a;
             margin: 18px 0;
         }
         .forgot-link, .register-link {
-            color: #60a5fa;
+            color: #4a9eff;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
@@ -136,34 +136,34 @@
             margin-top: 4px;
         }
         .back-to-login {
-            color: #8899aa;
+            color: #888888;
             font-size: 13px;
             cursor: pointer;
             text-align: center;
             margin-top: 10px;
         }
         .back-to-login span {
-            color: #60a5fa;
+            color: #4a9eff;
             font-weight: 600;
         }
         .back-to-login span:hover {
             text-decoration: underline;
         }
         .demo-info {
-            background: #0a1628;
+            background: #0d0d0d;
             padding: 10px;
             border-radius: 8px !important;
             font-size: 12px;
-            color: #8899aa;
+            color: #888888;
             text-align: center;
             margin-top: 12px;
-            border: 1px solid #1a2a3a;
+            border: 1px solid #1a1a1a;
         }
         .demo-info strong {
-            color: #7ae0ff;
+            color: #4a9eff;
         }
         .error-msg {
-            color: #ef4444;
+            color: #ff4444;
             font-size: 13px;
             margin-top: 6px;
             text-align: center;
@@ -173,8 +173,8 @@
             display: block;
         }
         .balance-display {
-            background: #0a1628;
-            border: 1.5px solid #1a2a3a;
+            background: #0d0d0d;
+            border: 1.5px solid #1a1a1a;
             border-radius: 12px !important;
             padding: 12px 16px;
             display: flex;
@@ -184,7 +184,7 @@
         }
         .balance-display .label {
             font-size: 14px;
-            color: #8899aa;
+            color: #888888;
             font-weight: 600;
         }
         .balance-display .amount {
@@ -194,7 +194,7 @@
         }
         .balance-display .amount .currency {
             font-size: 14px;
-            color: #8899aa;
+            color: #888888;
             font-weight: 600;
         }
         .balance-display .amount .infinity {
@@ -204,9 +204,9 @@
         .bottom-menu {
             display: flex;
             justify-content: space-around;
-            background: #0f1d33;
+            background: #0d0d0d;
             padding: 10px 0;
-            border-top: 1px solid #1a2a3a;
+            border-top: 1px solid #1a1a1a;
             margin-top: 16px;
             border-radius: 12px !important;
             box-shadow: 0 2px 12px rgba(0,0,0,0.3);
@@ -216,7 +216,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            color: #8899aa;
+            color: #888888;
             font-size: 12px;
             font-weight: 600;
             transition: .2s;
@@ -229,10 +229,10 @@
             margin-bottom: 2px;
         }
         .bottom-menu .menu-item:hover {
-            color: #7ae0ff;
+            color: #4a9eff;
         }
         .bottom-menu .menu-item.active {
-            color: #7ae0ff;
+            color: #4a9eff;
         }
         .btn-success-custom {
             background: #22c55e;
@@ -250,7 +250,7 @@
         .btn-ddos {
             width: 100%;
             padding: 12px;
-            background: #ef4444;
+            background: #ff4444;
             color: #fff;
             border: none;
             border-radius: 8px !important;
@@ -269,31 +269,31 @@
             opacity: 0.7;
         }
         .card-content {
-            background: #111d2e;
-            border: 1px solid #1a2a3a;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
             box-shadow: 0 2px 12px rgba(0,0,0,0.3);
             padding: 16px;
             border-radius: 12px !important;
             margin-bottom: 14px;
         }
         .card-content h6 {
-            color: #7ae0ff;
+            color: #4a9eff;
             font-weight: 700;
         }
         select.form-select {
-            background: #0a1628 !important;
-            border: 1.5px solid #1a2a3a !important;
+            background: #0d0d0d !important;
+            border: 1.5px solid #1a1a1a !important;
             border-radius: 8px !important;
             padding: 10px 14px;
             width: 100%;
-            color: #e2e8f0;
+            color: #ffffff;
         }
         select.form-select:focus {
-            border-color: #2563eb !important;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+            border-color: #4a9eff !important;
+            box-shadow: 0 0 0 3px rgba(74,158,255,0.2);
         }
         .top-bar {
-            background: #0f1d33;
+            background: #0d0d0d;
             padding: 12px 20px;
             border-radius: 12px !important;
             box-shadow: 0 2px 12px rgba(0,0,0,0.3);
@@ -301,7 +301,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 1px solid #1a2a3a;
+            border: 1px solid #1a1a1a;
         }
         .top-bar .user-info {
             display: flex;
@@ -316,15 +316,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #7ae0ff;
-            background: #1a2a3a;
+            color: #4a9eff;
+            background: #1a1a1a;
             overflow: hidden;
             flex-shrink: 0;
-            border: 2px solid #1a2a3a;
+            border: 2px solid #1a1a1a;
             transition: .2s;
         }
         .top-bar .avatar:hover {
-            border-color: #2563eb;
+            border-color: #4a9eff;
         }
         .top-bar .avatar img {
             width: 100%;
@@ -337,14 +337,14 @@
         .top-bar .username {
             font-weight: 700;
             font-size: 14px;
-            color: #e2e8f0;
+            color: #ffffff;
         }
         .qr-code {
             text-align: center;
             padding: 10px;
-            background: #0a1628;
+            background: #0d0d0d;
             border-radius: 8px !important;
-            border: 1px dashed #1a2a3a;
+            border: 1px dashed #1a1a1a;
         }
         .qr-code img {
             max-width: 200px;
@@ -352,17 +352,17 @@
             border-radius: 8px !important;
         }
         .avatar-upload-btn {
-            background: #0a1628;
-            border: 1px dashed #1a2a3a;
+            background: #0d0d0d;
+            border: 1px dashed #1a1a1a;
             padding: 4px 12px;
             border-radius: 20px !important;
             font-size: 11px;
-            color: #60a5fa;
+            color: #4a9eff;
             cursor: pointer;
             transition: .2s;
         }
         .avatar-upload-btn:hover {
-            background: #1a2a3a;
+            background: #1a1a1a;
         }
         .btn-send-code {
             width: 100%;
@@ -383,7 +383,7 @@
         .btn-verify-code {
             width: 100%;
             padding: 12px;
-            background: #2563eb;
+            background: #4a9eff;
             color: #fff;
             border: none;
             border-radius: 8px !important;
@@ -394,17 +394,17 @@
             margin-top: 8px;
         }
         .btn-verify-code:hover {
-            background: #1d4ed8;
+            background: #3a7fd4;
         }
         .back-to-login-forgot {
-            color: #8899aa;
+            color: #888888;
             font-size: 13px;
             cursor: pointer;
             text-align: center;
             margin-top: 10px;
         }
         .back-to-login-forgot span {
-            color: #60a5fa;
+            color: #4a9eff;
             font-weight: 600;
         }
         .back-to-login-forgot span:hover {
@@ -415,7 +415,7 @@
             height: 120px;
             border-radius: 50% !important;
             object-fit: cover;
-            border: 4px solid #1a2a3a;
+            border: 4px solid #1a1a1a;
             display: block;
             margin: 0 auto 16px auto;
         }
@@ -424,7 +424,7 @@
             height: 100px;
             border-radius: 50% !important;
             object-fit: cover;
-            border: 4px solid #1a2a3a;
+            border: 4px solid #1a1a1a;
             display: block;
             margin: 0 auto 12px auto;
         }
@@ -433,13 +433,13 @@
             margin-bottom: 16px;
         }
         .profile-info .label {
-            color: #8899aa;
+            color: #888888;
             font-size: 13px;
         }
         .profile-info .value {
             font-weight: 600;
             font-size: 16px;
-            color: #e2e8f0;
+            color: #ffffff;
         }
         .profile-info .value.role {
             display: inline-block;
@@ -448,15 +448,15 @@
             font-size: 13px;
         }
         .profile-info .value.role.admin { background: #fee2e2; color: #dc2626; }
-        .profile-info .value.role.vip { background: #dbeafe; color: #2563eb; }
-        .profile-info .value.role.user { background: #1a2a3a; color: #8899aa; }
+        .profile-info .value.role.vip { background: #dbeafe; color: #4a9eff; }
+        .profile-info .value.role.user { background: #1a1a1a; color: #888888; }
         .toast-message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #111d2e;
-            border: 1px solid #1a2a3a;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
             border-radius: 16px !important;
             padding: 24px 32px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
@@ -473,15 +473,15 @@
         .toast-message .title {
             font-weight: 700;
             font-size: 18px;
-            color: #e2e8f0;
+            color: #ffffff;
         }
         .toast-message .desc {
             font-size: 14px;
-            color: #8899aa;
+            color: #888888;
             margin: 8px 0 16px;
         }
         .toast-message .btn-toast {
-            background: #2563eb;
+            background: #4a9eff;
             color: #fff;
             border: none;
             padding: 10px 24px;
@@ -491,7 +491,7 @@
             transition: .2s;
         }
         .toast-message .btn-toast:hover {
-            background: #1d4ed8;
+            background: #3a7fd4;
         }
         .toast-overlay {
             position: fixed;
@@ -524,70 +524,6 @@
             background: #fef3c7;
             color: #92400e;
         }
-        .zalo-float {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50% !important;
-            background: #0068ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,104,255,0.5);
-            cursor: grab;
-            z-index: 9997;
-            transition: transform 0.2s;
-            border: 3px solid #fff;
-            user-select: none;
-            touch-action: none;
-        }
-        .zalo-float:active {
-            cursor: grabbing;
-        }
-        .zalo-float:hover {
-            transform: scale(1.1);
-        }
-        .zalo-float .tooltip-text {
-            position: absolute;
-            right: 70px;
-            background: #1a2332;
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 8px !important;
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .zalo-float:hover .tooltip-text {
-            opacity: 1;
-        }
-        .zalo-float .tooltip-text::after {
-            content: '';
-            position: absolute;
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-left: 8px solid #1a2332;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-        }
-        @media (max-width: 480px) {
-            .zalo-float {
-                width: 50px;
-                height: 50px;
-                font-size: 26px;
-                bottom: 80px;
-                right: 15px;
-            }
-            .zalo-float .tooltip-text {
-                display: none;
-            }
-        }
         .ddos-banner {
             width: 100%;
             max-height: 120px;
@@ -599,7 +535,7 @@
         }
         .ddos-banner:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+            box-shadow: 0 4px 20px rgba(74,158,255,0.3);
         }
         .ddos-title {
             display: flex;
@@ -611,12 +547,13 @@
             margin: 0;
             font-size: 20px;
             font-weight: 700;
+            color: #ffffff;
         }
         .text-secondary {
-            color: #8899aa !important;
+            color: #888888 !important;
         }
         .text-primary {
-            color: #60a5fa !important;
+            color: #4a9eff !important;
         }
         .text-warning {
             color: #facc15 !important;
@@ -625,10 +562,10 @@
             color: #4ade80 !important;
         }
         .text-danger {
-            color: #ef4444 !important;
+            color: #ff4444 !important;
         }
         .bg-light {
-            background: #1a2a3a !important;
+            background: #1a1a1a !important;
         }
         .alert-success {
             background: #064e3b;
@@ -642,11 +579,61 @@
         }
         .alert-info {
             background: #1e3a5f;
-            color: #60a5fa;
-            border: 1px solid #2563eb;
+            color: #4a9eff;
+            border: 1px solid #4a9eff;
         }
         .badge {
             font-weight: 600;
+        }
+        .btn-outline-danger {
+            color: #ff4444;
+            border-color: #ff4444;
+            background: transparent;
+        }
+        .btn-outline-danger:hover {
+            background: #ff4444;
+            color: #fff;
+        }
+        .btn-outline-secondary {
+            color: #888888;
+            border-color: #888888;
+            background: transparent;
+        }
+        .btn-outline-secondary:hover {
+            background: #888888;
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+        /* Nút Zalo Hỗ Trợ 24/7 */
+        .btn-zalo-support {
+            background: #0068ff;
+            border: none;
+            border-radius: 8px !important;
+            padding: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #fff;
+            transition: .2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .btn-zalo-support:hover {
+            background: #0052cc;
+            transform: scale(1.01);
+            color: #fff;
+        }
+        .btn-zalo-support img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50% !important;
+            object-fit: cover;
+            border: 2px solid #fff;
         }
     </style>
 </head>
@@ -729,7 +716,7 @@
             </div>
 
             <div class="demo-info">
-                <strong>Demo:</strong> admin / 12345 &nbsp;|&nbsp; namvip6666 / namdz123 &nbsp;|&nbsp; user / 123
+                <strong>Demo:</strong> admin / 12345 &nbsp;|&nbsp; user / 123
             </div>
         </div>
     </div>
@@ -755,7 +742,7 @@
         <div v-show="activeMenu === 'profile'" class="card-content">
             <div class="profile-info">
                 <div style="position:relative;display:inline-block;">
-                    <img :src="currentUser.avatar || 'https://ui-avatars.com/api/?name='+currentUser.username+'&background=1a2a3a&color=7ae0ff&size=100'" class="profile-avatar" />
+                    <img :src="currentUser.avatar || 'https://ui-avatars.com/api/?name='+currentUser.username+'&background=1a1a1a&color=4a9eff&size=100'" class="profile-avatar" />
                     <div style="position:absolute;bottom:4px;right:4px;">
                         <input type="file" ref="avatarInputProfile" @change="uploadAvatarProfile" accept="image/*" style="display:none;" />
                         <button class="btn btn-sm btn-primary" @click="$refs.avatarInputProfile.click()" style="border-radius:50%!important;width:32px;height:32px;padding:0;font-size:14px;">
@@ -788,7 +775,8 @@
 
         <!-- ===== DDoS ===== -->
         <div v-show="activeMenu === 'ddos'" class="card-content">
-            <img src="https://cdn.upanhlaylink.com/i/R4tnXsnU.png" alt="DDOS FLPHG" class="ddos-banner" @click="activeMenu='lichsu'" title="Xem lịch sử DDoS" />
+            <!-- ẢNH DDOS ALPHA MỚI -->
+            <img src="https://cdn.upanhlaylink.com/i/iWiGgofb.png" alt="DDOS ALPHA" class="ddos-banner" @click="activeMenu='lichsu'" title="Xem lịch sử DDoS" />
             
             <div class="ddos-title">
                 <i class="bi bi-hurricane text-primary" style="font-size:24px;"></i>
@@ -843,6 +831,13 @@
             <button class="btn-ddos" @click="startDDoS" :disabled="isRunning || (currentUser.balance < 500 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn')">
                 <i class="bi bi-play-circle"></i> {{ isRunning ? 'ĐANG XỬ LÝ...' : 'TẤN CÔNG (500₫)' }}
             </button>
+
+            <!-- ===== NÚT ZALO HỖ TRỢ 24/7 ===== -->
+            <a href="https://zalo.me/0705511795" target="_blank" class="btn-zalo-support">
+                <img src="https://cdn.upanhlaylink.com/i/WJ8EzMxt.jpeg" alt="Zalo" />
+                Hỗ Trợ 24/7
+            </a>
+
             <div class="d-flex justify-content-between mt-2">
                 <span class="badge bg-light text-dark p-2">📊 {{ statusText }}</span>
                 <span class="badge bg-light text-dark p-2">📤 {{ totalRequests }}</span>
@@ -874,7 +869,7 @@
                 <div class="form-group">
                     <label>Số tiền nạp</label>
                     <div class="input-group">
-                        <span class="input-group-text" style="background:#0a1628;border:1.5px solid #1a2a3a;border-radius:8px 0 0 8px!important;color:#8899aa;">₫</span>
+                        <span class="input-group-text" style="background:#0d0d0d;border:1.5px solid #1a1a1a;border-radius:8px 0 0 8px!important;color:#888888;">₫</span>
                         <input v-model.number="napAmount" type="number" class="form-control" min="5000" placeholder="5000" style="border-radius:0 8px 8px 0!important;" />
                     </div>
                 </div>
@@ -955,10 +950,10 @@
         </div>
     </div>
 
-    <!-- ===== NÚT ZALO ===== -->
+    <!-- ===== NÚT ZALO FLOATING ===== -->
     <div class="zalo-float" @mousedown="startDrag" @touchstart="startDrag" @click="openZalo" id="zaloBtn">
         <span class="tooltip-text">💬 Chat Zalo</span>
-        <img src="https://cdn.upanhlaylink.com/i/zalo-icon.png" alt="Zalo" style="width:36px;height:36px;border-radius:50%;object-fit:contain;" />
+        <img src="https://cdn.upanhlaylink.com/i/WJ8EzMxt.jpeg" alt="Zalo" style="width:36px;height:36px;border-radius:50%;object-fit:contain;" />
     </div>
 
     <!-- ===== TOAST THÔNG BÁO ===== -->
@@ -1024,9 +1019,8 @@ new Vue({
             if(!localStorage.getItem('ddos_users')) {
                 const defaultUsers = [
                     { id:1, username:'admin', password:'12345', role:'admin', balance: Infinity, avatar: null, email: 'admin@demo.com', createdAt: '01/01/2026' },
-                    { id:2, username:'namvip6666', password:'namdz123', role:'admin', balance: Infinity, avatar: null, email: 'nam@demo.com', createdAt: '01/01/2026' },
-                    { id:3, username:'user', password:'123', role:'user', balance: 20000, avatar: null, email: 'user@demo.com', createdAt: '15/06/2026' },
-                    { id:4, username:'vip', password:'vip', role:'vip', balance: 100000, avatar: null, email: 'vip@demo.com', createdAt: '20/08/2026' }
+                    { id:2, username:'user', password:'123', role:'user', balance: 20000, avatar: null, email: 'user@demo.com', createdAt: '15/06/2026' },
+                    { id:3, username:'vip', password:'vip', role:'vip', balance: 100000, avatar: null, email: 'vip@demo.com', createdAt: '20/08/2026' }
                 ];
                 localStorage.setItem('ddos_users', JSON.stringify(defaultUsers));
             }
