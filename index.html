@@ -60,7 +60,7 @@
             border: 1.5px solid #1a1a1a;
             border-radius: 8px !important;
             font-size: 14px;
-            background: #0d0d0d;
+            background: #000000;
             transition: .2s;
             color: #ffffff;
         }
@@ -68,7 +68,7 @@
             border-color: #4a9eff;
             outline: none;
             box-shadow: 0 0 0 3px rgba(74,158,255,0.2);
-            background: #1a1a1a;
+            background: #0d0d0d;
         }
         .form-group textarea {
             resize: vertical;
@@ -281,7 +281,7 @@
             font-weight: 700;
         }
         select.form-select {
-            background: #0d0d0d !important;
+            background: #000000 !important;
             border: 1.5px solid #1a1a1a !important;
             border-radius: 8px !important;
             padding: 10px 14px;
@@ -607,7 +607,6 @@
             padding: 4px 10px;
             font-size: 12px;
         }
-        /* Nút Zalo Hỗ Trợ 24/7 */
         .btn-zalo-support {
             background: #0068ff;
             border: none;
@@ -634,6 +633,30 @@
             border-radius: 50% !important;
             object-fit: cover;
             border: 2px solid #fff;
+        }
+        /* Badge trạng thái - Nền trắng chữ đen */
+        .badge-status {
+            background: #ffffff !important;
+            color: #000000 !important;
+            padding: 6px 14px;
+            font-weight: 600;
+            border: 1px solid #1a1a1a;
+        }
+        .badge-status i {
+            color: #000000;
+        }
+        /* Input đen */
+        .form-control-dark {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: 1.5px solid #1a1a1a !important;
+        }
+        .form-control-dark:focus {
+            border-color: #4a9eff !important;
+            box-shadow: 0 0 0 3px rgba(74,158,255,0.2) !important;
+        }
+        .form-control-dark::placeholder {
+            color: #666666;
         }
     </style>
 </head>
@@ -788,27 +811,30 @@
             
             <div class="form-group">
                 <label>Tên miền</label>
-                <input v-model="targetUrl" class="form-control" placeholder="nhập tên miền (vd: ancd.com)" />
+                <input v-model="targetUrl" class="form-control form-control-dark" placeholder="nhập tên miền (vd: ancd.com)" />
             </div>
             <div class="form-group">
                 <label>Số lần DDoS <small class="text-secondary" v-if="!isAdmin">(tối đa 1000)</small></label>
-                <input v-model.number="maxRequests" type="number" class="form-control" :max="isAdmin ? 999999 : 1000" placeholder="100" />
+                <input v-model.number="maxRequests" type="number" class="form-control form-control-dark" :max="isAdmin ? 999999 : 1000" placeholder="100" />
                 <small class="text-primary" v-if="isAdmin">* Admin không giới hạn</small>
             </div>
             <div class="row g-2">
                 <div class="col-6">
                     <label>Luồng</label>
-                    <input v-model.number="threads" type="number" class="form-control" value="80" min="1" max="500" />
+                    <input v-model.number="threads" type="number" class="form-control form-control-dark" value="80" min="1" max="500" />
                 </div>
                 <div class="col-6">
                     <label>Method</label>
-                    <select v-model="method" class="form-select"><option>GET</option><option>POST</option></select>
+                    <select v-model="method" class="form-select form-control-dark">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Chế độ tấn công</label>
-                <select v-model="attackMode" class="form-select">
+                <select v-model="attackMode" class="form-select form-control-dark">
                     <option value="normal">🎯 DDoS Normal</option>
                     <option value="404">💀 404 Flood</option>
                     <option value="mixed">🔥 Mixed (DDoS + 404)</option>
@@ -817,7 +843,7 @@
 
             <div v-if="attackMode === '404' || attackMode === 'mixed'" class="form-group">
                 <label>Đường dẫn 404 <small class="text-secondary">(mỗi dòng 1 đường dẫn, để trống tự tạo)</small></label>
-                <textarea v-model="custom404Paths" class="form-control" rows="3" placeholder="/wp-admin/&#10;/api/v1/&#10;/css/"></textarea>
+                <textarea v-model="custom404Paths" class="form-control form-control-dark" rows="3" placeholder="/wp-admin/&#10;/api/v1/&#10;/css/"></textarea>
                 <small class="text-primary">* Để trống để tự động tạo đường dẫn ngẫu nhiên</small>
             </div>
 
@@ -838,10 +864,11 @@
                 Hỗ Trợ 24/7
             </a>
 
+            <!-- ===== BADGE TRẠNG THÁI - NỀN TRẮNG CHỮ ĐEN ===== -->
             <div class="d-flex justify-content-between mt-2">
-                <span class="badge bg-light text-dark p-2">📊 {{ statusText }}</span>
-                <span class="badge bg-light text-dark p-2">📤 {{ totalRequests }}</span>
-                <span class="badge bg-light text-dark p-2">⚡ {{ currentRPS }} RPS</span>
+                <span class="badge badge-status">📊 {{ statusText }}</span>
+                <span class="badge badge-status">📤 {{ totalRequests }}</span>
+                <span class="badge badge-status">⚡ {{ currentRPS }} RPS</span>
             </div>
             <div v-if="currentUser.balance < 500 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn'" class="mt-2 small text-warning text-center">
                 <i class="bi bi-exclamation-triangle"></i> Số dư không đủ 500₫
@@ -870,13 +897,13 @@
                     <label>Số tiền nạp</label>
                     <div class="input-group">
                         <span class="input-group-text" style="background:#0d0d0d;border:1.5px solid #1a1a1a;border-radius:8px 0 0 8px!important;color:#888888;">₫</span>
-                        <input v-model.number="napAmount" type="number" class="form-control" min="5000" placeholder="5000" style="border-radius:0 8px 8px 0!important;" />
+                        <input v-model.number="napAmount" type="number" class="form-control form-control-dark" min="5000" placeholder="5000" style="border-radius:0 8px 8px 0!important;" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Ghi chú chuyển khoản (bắt buộc)</label>
-                    <input v-model="napNote" class="form-control" placeholder="Nhập đúng nội dung ghi chú" />
+                    <input v-model="napNote" class="form-control form-control-dark" placeholder="Nhập đúng nội dung ghi chú" />
                     <small class="text-primary">* Ghi chú của bạn: <strong>{{napNote || 'chưa nhập'}}</strong></small>
                 </div>
 
